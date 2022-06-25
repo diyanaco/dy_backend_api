@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from backend import Base
 
-class User(Base):
+class UserModel(Base):
     __tablename__ = 'dy_shared_user'
     id = Column(Integer, primary_key=True)
     first_name = Column(String)

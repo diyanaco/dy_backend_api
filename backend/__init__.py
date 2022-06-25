@@ -3,19 +3,27 @@ from sqlalchemy import create_engine
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
+from flask_restful import Api
 
 app = Flask(__name__)
-engine = create_engine('sqlite:///diyanaco.db', echo=True)
+api = Api(app)
+
+
+engine = create_engine('sqlite:///diyanaco.db', echo=True, connect_args={'check_same_thread': False})
 Base = declarative_base()
+
+
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
+
+from model.sys.dy_shared_user import UserModel
+from backend.controller.user_controller import User
+
 #Only run once to create tables
+#Base.metadata.create_all(engine)
 
-from model.sys.dy_shared_user import User
-
-Base.metadata.create_all(engine)
-
-user1 = User(id = 123, first_name ="Zaim", last_name = "Saha")
-session.add(user1)
-session.commit()
+#To insert new user
+# user1 = UserModel(id = 123, first_name ="Zaim", last_name = "Saha")
+# session.add(user1)
+# session.commit()

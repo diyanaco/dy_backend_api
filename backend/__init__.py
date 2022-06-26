@@ -17,7 +17,7 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
-print("hello world")
+#test hello world
 
 from model.sys.dy_shared_user import UserModel
 from backend.controller.user_controller import User

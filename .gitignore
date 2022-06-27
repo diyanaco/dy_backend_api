@@ -134,3 +134,4 @@ package-lock.json
 package.json
 /.vscode
 /sql_scripts
+/.idea

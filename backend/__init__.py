@@ -18,8 +18,10 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
+#test hello world commit all
+
 from model.sys.dy_shared_user import UserModel
-from backend.controller.user_controller import User
+from backend.controller.UserController import UserController
 
 #Only run once to create tables
 #Base.metadata.create_all(engine)

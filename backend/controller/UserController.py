@@ -36,29 +36,14 @@ session = Session()
 
 
 class UserController(BaseController):
-    def __init__(self, id=0, first_name="", last_name=""):
-        self.id = id,
-        self.first_name = first_name,
-        self.last_name = last_name
+    def __init__(self):
+        base.__init__(UserModel)
 
     @marshal_with(resource_fields)
     def get(self, id):
-        stmt = select(UserModel).where(UserModel.id.in_([id]))
-        # first() will return none if there was no result.
-        # one() will raise an error if the result was
-        user = session.scalars(stmt).first()
-        if not user:
-            abort(404, message="Could not find user with that id")
-        # print(user.__dict__)
-        # Serializing json
-        #json_object = json.dumps(result, indent = 4)
-        result = {
-            'status_code': 200,
-            'message' : APIconstants.RETRIEVED,
-            'user': user,
-        }
-        #response = json.dumps(marshal_with(result,resource_fields))
-        return result
+        a, b = base.callGetQuery(id)
+        response = {**a, "user":b}
+        return response
 
     @marshal_with(resource_fields)
     def post(self, id):
@@ -115,3 +100,4 @@ class UserController(BaseController):
 
 #api.add_resource(User, "/user/<string:first_name>")
 api.add_resource(UserController, "/user/<int:id>")
+# user = UserController(UserModel).get()

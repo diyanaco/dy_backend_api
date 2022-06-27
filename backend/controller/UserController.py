@@ -42,59 +42,27 @@ class UserController(BaseController):
     @marshal_with(resource_fields)
     def get(self, id):
         a, b = base.callGetQuery(id)
-        response = {**a, "user":b}
+        response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def post(self, id):
         args = user_post_args.parse_args()
-        stmt = select(UserModel).where(UserModel.id.in_([id]))
-        result = session.scalars(stmt).first()
-        if (result):
-            abort(404, message="id has alread been taken")
-        user = UserModel(
-            id=id, first_name=args["first_name"], last_name=args['last_name'])
-        session.add(user)
-        session.commit()
-        response = {
-            "status_code" : 200, 
-            "message" : APIconstants.CREATED,
-            "user": user
-        }
+        a, b = base.callPostQuery(id, args)
+        response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def put(self, id):
         args = user_put_args.parse_args()
-        stmt = select(UserModel).where(UserModel.id.in_([id]))
-        user = session.scalars(stmt).first()
-        if not user:
-            abort(404, message="user doesn't exist, cannot update")
-        if args['first_name']:
-            user.first_name = args['first_name']
-        if args['last_name']:
-            user.last_name = args['last_name']
-        session.commit()
-        response = {
-            "status_code":200,
-            "message": APIconstants.UPDATED,
-            "user":user
-        }
+        a, b = base.callPutQuery(id, args)
+        response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def delete(self, id):
-        stmt = select(UserModel).where(UserModel.id.in_([id]))
-        user = session.scalars(stmt).first()
-        response = {
-            "status_code":200,
-            "message":APIconstants.DELETED,
-            "user":user
-        }
-        if not user:
-            abort(404, message="user doesn't exist, cannot delete")
-        session.delete(user)
-        session.commit()
+        a, b = base.callDeleteQuery(id)
+        response = {**a, "user": b}
         return response
 
 

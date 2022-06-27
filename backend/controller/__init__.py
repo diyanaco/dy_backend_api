@@ -6,6 +6,7 @@ from backend import engine
 from flask_restful import abort
 
 from backend.constants import APIconstants
+from model.sys.dy_shared_user import UserModel
 
 resource_fields = {
     "status_code" : fields.Integer,
@@ -26,18 +27,56 @@ class BaseController(Resource, Generic[T]):
         self.model = model
     
     def callGetQuery(self, id):
-        stmt = select(self.model).where(self.model.id.in_([id]))
-        # first() will return none if there was no result.
-        # one() will raise an error if the result was
-        user = session.scalars(stmt).first()
-        if not user:
+        print(self)
+        returnData = self.queryStatement(id)
+        if not returnData:
             abort(404, message="Could not find user with that id")
-        # print(user.__dict__)
-        # Serializing json
-        #json_object = json.dumps(result, indent = 4)
         result = {
             'status_code': 200,
             'message' : APIconstants.RETRIEVED,
         }
-        #response = json.dumps(marshal_with(result,resource_fields))
-        return result, user
+        return result, returnData
+
+    def callPostQuery(self, id, args):
+        returnData = self.queryStatement(id)
+        if returnData:
+            abort(404, message="id has already been taken")
+        modifiedData = self.model(id=id, first_name=args["first_name"], last_name=args['last_name'])
+        session.add(modifiedData)
+        session.commit()
+        result = {
+            'status_code': 200,
+            'message' : APIconstants.CREATED,
+        }
+        return result, modifiedData
+
+    def callPutQuery(self, id, args):
+        returnData = self.queryStatement(id)
+        if not returnData:
+            abort(404, message="user doesn't exist, cannot update")
+        if args['first_name']:
+            returnData.first_name = args['first_name']
+        if args['last_name']:
+            returnData.last_name = args['last_name']
+        session.commit()
+        result = {
+            'status_code': 200,
+            'message' : APIconstants.UPDATED,
+        }
+        return result, returnData
+
+    def callDeleteQuery(self, id):
+        returnData = self.queryStatement(id)
+        if not returnData:
+            abort(404, message="user doesn't exist, cannot delete")
+        session.delete(returnData)
+        session.commit()
+        response = {
+            "status_code":200,
+            "message":APIconstants.DELETED,
+        }
+        return response, returnData
+
+    def queryStatement(self,id):
+        stmt = select(self.model).where(self.model.id.in_([id]))
+        return session.scalars(stmt).first()

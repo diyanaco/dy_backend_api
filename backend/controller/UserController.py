@@ -10,14 +10,11 @@ import json
 from backend.constants import APIconstants
 
 user_post_args = reqparse.RequestParser()
-user_post_args.add_argument(
-    "first_name", type=str, help="First name of the user is required", required=True)
-user_post_args.add_argument("last_name", type=str,
-                            help="Last name of the user", required=True)
+user_post_args.add_argument("first_name", type=str, help="First name of the user is required", required=True)
+user_post_args.add_argument("last_name", type=str,help="Last name of the user", required=True)
 
 user_put_args = reqparse.RequestParser()
-user_put_args.add_argument("first_name", type=str,
-                           help="First name of the user is required")
+user_put_args.add_argument("first_name", type=str,help="First name of the user is required")
 user_put_args.add_argument("last_name", type=str, help="Last name of the user")
 
 resource_fields_user = {
@@ -29,11 +26,6 @@ resource_fields_user = {
 base = BaseController()
 resource_fields = base.resource_fields
 resource_fields['user'] = fields.Nested(resource_fields_user)
-
-Session = sessionmaker()
-Session.configure(bind=engine)
-session = Session()
-
 
 class UserController(BaseController):
     def __init__(self):

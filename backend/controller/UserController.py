@@ -1,3 +1,4 @@
+from tkinter import constants
 from unittest import result
 from flask_restful import Resource, reqparse, abort, fields, marshal_with
 from backend.controller import BaseController
@@ -6,6 +7,7 @@ from backend import session, engine, api
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 import json
+from backend.constants import APIconstants
 
 user_post_args = reqparse.RequestParser()
 user_post_args.add_argument(
@@ -52,6 +54,7 @@ class UserController(BaseController):
         #json_object = json.dumps(result, indent = 4)
         result = {
             'status_code': 200,
+            'message' : APIconstants.RETRIEVED,
             'user': user,
         }
         #response = json.dumps(marshal_with(result,resource_fields))
@@ -68,7 +71,12 @@ class UserController(BaseController):
             id=id, first_name=args["first_name"], last_name=args['last_name'])
         session.add(user)
         session.commit()
-        return user, 201
+        response = {
+            "status_code" : 200, 
+            "message" : APIconstants.CREATED,
+            "user": user
+        }
+        return response
 
     @marshal_with(resource_fields)
     def put(self, id):
@@ -82,16 +90,27 @@ class UserController(BaseController):
         if args['last_name']:
             user.last_name = args['last_name']
         session.commit()
-        return user
+        response = {
+            "status_code":200,
+            "message": APIconstants.UPDATED,
+            "user":user
+        }
+        return response
 
+    @marshal_with(resource_fields)
     def delete(self, id):
         stmt = select(UserModel).where(UserModel.id.in_([id]))
         user = session.scalars(stmt).first()
+        response = {
+            "status_code":200,
+            "message":APIconstants.DELETED,
+            "user":user
+        }
         if not user:
             abort(404, message="user doesn't exist, cannot delete")
         session.delete(user)
         session.commit()
-        return 'User deleted', 204
+        return response
 
 
 #api.add_resource(User, "/user/<string:first_name>")

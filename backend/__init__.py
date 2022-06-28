@@ -4,10 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_restful import Api
+from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
-
+CORS(app)
 
 engine = create_engine('sqlite:///diyanaco.db', echo=True, connect_args={'check_same_thread': False})
 Base = declarative_base()

@@ -29,34 +29,33 @@ resource_fields['user'] = fields.Nested(resource_fields_user)
 
 class UserController(BaseController):
     def __init__(self):
-        base.__init__(UserModel)
+        self.model = UserModel
 
     @marshal_with(resource_fields)
     def get(self, id):
-        a, b = base.callGetQuery(id)
+        a, b = self.callGetQuery(id)
         response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def post(self, id):
         args = user_post_args.parse_args()
-        a, b = base.callPostQuery(id, args)
+        a, b = self.callPostQuery(id, args)
         response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def put(self, id):
         args = user_put_args.parse_args()
-        a, b = base.callPutQuery(id, args)
+        a, b = self.callPutQuery(id, args)
         response = {**a, "user": b}
         return response
 
     @marshal_with(resource_fields)
     def delete(self, id):
-        a, b = base.callDeleteQuery(id)
+        a, b = self.callDeleteQuery(id)
         response = {**a, "user": b}
         return response
-
 
 #api.add_resource(User, "/user/<string:first_name>")
 api.add_resource(UserController, "/user/<int:id>")

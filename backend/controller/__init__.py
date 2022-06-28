@@ -12,14 +12,14 @@ resource_fields = {
     "status_code" : fields.Integer,
     "message": fields.String,
 }
-T = TypeVar('T')
+#T = TypeVar('T')
 
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
-class BaseController(Resource, Generic[T]):
-    def __init__(self, model : T = None):
+class BaseController(Resource):
+    def __init__(self, model=None):
         self.resource_fields = {
             "status_code": fields.Integer,
             "message":fields.String

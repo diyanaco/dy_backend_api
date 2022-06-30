@@ -14,3 +14,5 @@ yum update -y
 sudo yum install epel-release
 scp /deployment/__init__.py root@172.104.188.38:/root/diyanaco/__init__.py
 ```
+
+'''testing clickup integrations'''

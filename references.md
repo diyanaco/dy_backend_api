@@ -18,3 +18,7 @@ sqlite:///./nameOfdb.db
         '''
         name = Column(String, unique=True, index=True)
         '''
+
+# angular 
+- Remove error of variables without initialization
+        "strictPropertyInitialization": false

@@ -16,3 +16,5 @@ scp /deployment/__init__.py root@172.104.188.38:/root/diyanaco/__init__.py
 ```
 
 hehe testing clickup integrations
+
+testing main

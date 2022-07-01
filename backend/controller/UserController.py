@@ -1,13 +1,7 @@
-from tkinter import constants
-from unittest import result
-from flask_restful import Resource, reqparse, abort, fields, marshal_with
+from flask_restful import reqparse, abort, fields, marshal_with
 from backend.controller import BaseController
 from model.sys.dy_shared_user import UserModel
-from backend import session, engine, api
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import select
-import json
-from backend.constants import APIconstants
+from backend import api
 
 user_post_args = reqparse.RequestParser()
 user_post_args.add_argument("first_name", type=str, help="First name of the user is required", required=True)

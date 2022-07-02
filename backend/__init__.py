@@ -31,3 +31,7 @@ from backend.controller.UserController import UserController
 # user1 = UserModel(id = 123, first_name ="Zaim", last_name = "Saha")
 # session.add(user1)
 # session.commit()
+
+@app.route("/")
+def hello_diyana():
+    return "<p>This is diyanaco API!</p>"

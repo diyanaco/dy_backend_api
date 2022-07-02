@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 /node_modules
-diyanaco.db
+#diyanaco.db
 package-lock.json
 package.json
 /.vscode

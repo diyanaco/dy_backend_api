@@ -10,6 +10,13 @@ app = Flask(__name__)
 api = Api(app)
 CORS(app)
 
+##May be useful in the future
+# db_url = 'localhost:5432'
+# db_name = 'online-exam'
+# db_user = 'postgres'
+# db_password = '0NLIN3-ex4m'
+# engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
+
 engine = create_engine('sqlite:///diyanaco.db', echo=True, connect_args={'check_same_thread': False})
 Base = declarative_base()
 

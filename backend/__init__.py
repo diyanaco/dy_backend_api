@@ -38,7 +38,11 @@ from backend.controller.UserController import UserController
 # user1 = UserModel(id = 123, first_name ="Zaim", last_name = "Saha")
 # session.add(user1)
 # session.commit()
+# from .views import views
+# from .auth import auth
 
+# app.register_blueprint(views, url_prefix='/')
+# app.register_blueprint(auth, url_prefix='/')
 @app.route("/")
 def hello_diyana():
     return "<p>This is diyanaco API!</p>"

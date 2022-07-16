@@ -22,11 +22,12 @@ class BaseController(Resource):
     def __init__(self, model=None):
         self.resource_fields = {
             "status_code": fields.Integer,
-            "message":fields.String
+            "message":fields.String,
+            "error": fields.String
         }
         self.model = model
     
-    def callGetQuery(self, id):
+    def callGetQuery(self, id,):
         print(self)
         returnData = self.queryStatement(id)
         if not returnData:

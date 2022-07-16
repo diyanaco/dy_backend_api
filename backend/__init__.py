@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy import create_engine
@@ -5,10 +6,17 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 from flask_restful import Api
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
 
 app = Flask(__name__)
 api = Api(app)
+SECRET_KEY = os.environ.get('SECRET_KEY') or 'this is a secret'
+print(SECRET_KEY)
+app.config['SECRET_KEY'] = SECRET_KEY
+app.config['JWT_SECRET_KEY'] = 'thisissoawesometrustme'
 CORS(app)
+jwt = JWTManager(app)
 
 ##May be useful in the future
 # db_url = 'localhost:5432'
@@ -30,6 +38,7 @@ session = Session()
 
 from model.sys.dy_shared_user import UserModel
 from backend.controller.UserController import UserController
+from backend.controller.UserAuthController import AuthLoginController, AuthSignupController
 
 #Only run once to create tables
 #Base.metadata.create_all(engine)
@@ -43,6 +52,11 @@ from backend.controller.UserController import UserController
 
 # app.register_blueprint(views, url_prefix='/')
 # app.register_blueprint(auth, url_prefix='/')
+
+@app.before_first_request
+def create_tables():
+    Base.metadata.create_all(engine)
+
 @app.route("/")
 def hello_diyana():
     return "<p>This is diyanaco API!</p>"

@@ -1,4 +1,6 @@
+from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with
+from backend.auth_middleware import token_required
 from backend.controller import BaseController
 from model.sys.dy_shared_user import UserModel
 from backend import api
@@ -6,6 +8,7 @@ from backend import api
 user_post_args = reqparse.RequestParser()
 user_post_args.add_argument("first_name", type=str, help="First name of the user is required", required=True)
 user_post_args.add_argument("last_name", type=str,help="Last name of the user", required=True)
+user_post_args.add_argument("email", type=str,help="Email of the user", required=True)
 
 user_put_args = reqparse.RequestParser()
 user_put_args.add_argument("first_name", type=str,help="First name of the user is required")
@@ -21,10 +24,13 @@ base = BaseController()
 resource_fields = base.resource_fields
 resource_fields['user'] = fields.Nested(resource_fields_user)
 
+
+
 class UserController(BaseController):
     def __init__(self):
         self.model = UserModel
-
+    
+    @jwt_required()
     @marshal_with(resource_fields)
     def get(self, id):
         a, b = self.callGetQuery(id)

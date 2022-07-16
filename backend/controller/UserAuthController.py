@@ -16,8 +16,8 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 resource_fields_user_auth = {
     "email": fields.String,
     "password" : fields.String,
-    'access-token' : fields.String,
-    'refresh_token' : fields.String,
+    "access_token" : fields.String,
+    "refresh_token" : fields.String,
 }
 
 base = BaseController()
@@ -91,26 +91,29 @@ class AuthSignupController(BaseController):
                 }, 400
 
             """Create a new user"""
+            access_token = create_access_token(identity = userRequest["email"])
+            refresh_token = create_refresh_token(identity = userRequest["email"])
+            print(access_token)
             stmt = select(UserModel).where(UserModel.email.in_([userRequest['email']]))
             user = session.scalars(stmt).first()
-            access_token = create_access_token(identity = user.id)
-            refresh_token = create_refresh_token(identity = user.id)
             if user:
                 return {
                     "status_code" : 404,
                     "message" : "Email has already been taken",
-                    "user_auth" : {
-                        "access-token" : access_token,
-                        "refresh-token" : refresh_token
-                    }
                 }
             modifiedUser = UserModel(id=str(uuid.uuid4()), first_name=userRequest["first_name"], last_name=userRequest['last_name'],email=userRequest["email"], password=generate_password_hash(userRequest['password']))
             session.add(modifiedUser)
             session.commit()
+            print("accesstoken is " + access_token)
             return {
                 "status_code" : 201,
                 "message": "Successfully created new user",
-                "user_auth": modifiedUser
+                "user_auth": {
+                    "email" : modifiedUser.email,
+                    "password": modifiedUser.password,
+                    "access_token" : access_token,
+                    "refresh_token" : refresh_token
+                }
             }, 201
         except Exception as e:
             return {

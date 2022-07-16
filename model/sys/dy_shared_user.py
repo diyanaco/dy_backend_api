@@ -7,7 +7,7 @@ class UserModel(Base):
     first_name = Column(String(50))
     last_name = Column(String(50))
     email = Column(String(50))
-    password = Column(String(50))
+    password = Column(String(200))
     
     def __repr__(self):
        return "<User(first_name='%s', last_name='%s')>" % (self.first_name, self.last_name)

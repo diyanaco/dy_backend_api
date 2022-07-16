@@ -25,7 +25,7 @@ jwt = JWTManager(app)
 # db_password = '0NLIN3-ex4m'
 # engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
 
-engine = create_engine('sqlite:///diyanaco.db', echo=True, connect_args={'check_same_thread': False})
+engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanaco', echo=True)
 Base = declarative_base()
 
 #another test
@@ -37,11 +37,14 @@ session = Session()
 #test hello world commit all
 
 from model.sys.dy_shared_user import UserModel
+from model.sub.sms.dy_sms_subject import SubjectModel
+from model.sub.sms.dy_sms_level import LevelModel
+from model.sub.sms.dy_sms_package import PackageModel
 from backend.controller.UserController import UserController
 from backend.controller.UserAuthController import AuthLoginController, AuthSignupController
 
 #Only run once to create tables
-#Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
 
 #To insert new user
 # user1 = UserModel(id = 123, first_name ="Zaim", last_name = "Saha")

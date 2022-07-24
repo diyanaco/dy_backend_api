@@ -12,7 +12,7 @@ from backend import app
 from flask_restful import abort, fields, marshal_with
 import uuid
 from flask_jwt_extended import create_access_token, create_refresh_token
-
+import datetime
 resource_fields_user_auth = {
     "email": fields.String,
     "password" : fields.String,
@@ -101,7 +101,11 @@ class AuthSignupController(BaseController):
                     "status_code" : 404,
                     "message" : "Email has already been taken",
                 }
-            modifiedUser = UserModel(id=str(uuid.uuid4()), first_name=userRequest["first_name"], last_name=userRequest['last_name'],email=userRequest["email"], password=generate_password_hash(userRequest['password']))
+            modifiedUser = UserModel(id=str(uuid.uuid4()), first_name=userRequest["first_name"], 
+                                                            last_name=userRequest['last_name'],
+                                                            email=userRequest["email"], 
+                                                            password=generate_password_hash(userRequest['password']),
+                                                            created_date=self.currentDateTime)
             session.add(modifiedUser)
             session.commit()
             return {

@@ -7,6 +7,7 @@ from model.sys.dy_shared_user import UserModel
 from backend import api
 import json
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select
 from backend import engine
 
 
@@ -28,6 +29,8 @@ resource_fields_user = {
     "id": fields.String,
     "last_name": fields.String,
     "first_name": fields.String,
+    "created_date" : fields.DateTime,
+    "updated_date" : fields.DateTime,
 }
 
 base = BaseController()
@@ -37,7 +40,7 @@ resource_fields['user'] = fields.List(fields.Nested(resource_fields_user))
 
 class UserController(BaseController):
     def __init__(self):
-        # super().__init__("user", resource_fields_user)
+        super().__init__()
         self.model = UserModel
     
     @marshal_with(resource_fields)
@@ -62,13 +65,16 @@ class UserController(BaseController):
     def put(self, id):
         args = user_put_args.parse_args()
         # a, b = self.callPutQuery(id, args)
-        returnData = self.queryStatement(id)
+        #returnData = self.queryStatement(id)
+        stmt = select(self.model).where(self.model.id.in_([id]))
+        returnData =  session.scalars(stmt).first()
         if not returnData:
             abort(404, message="user doesn't exist, cannot update")
         if args['first_name']:
             returnData.first_name = args['first_name']
         if args['last_name']:
             returnData.last_name = args['last_name']
+        returnData.updated_date = self.currentDateTime
         session.commit()
         response = {**self.callPutQuery(), "user": returnData}
         return response

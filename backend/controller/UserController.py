@@ -27,6 +27,9 @@ user_post_query_args.add_argument("first_name", type=str, help="First name of th
 user_post_query_args.add_argument("last_name", type=str,help="Last name of the user")
 user_post_query_args.add_argument("email", type=str,help="Email of the user")
 
+user_post_ids_args = reqparse.RequestParser()
+user_post_ids_args.add_argument("ids", type=str, action="append", help="List of Ids must at least have one")
+
 user_put_args = reqparse.RequestParser()
 user_put_args.add_argument("first_name", type=str,help="First name of the user ")
 user_put_args.add_argument("last_name", type=str, help="Last name of the user")
@@ -119,9 +122,20 @@ class UserAllController(BaseController):
         # print(json.dumps(marshal(b, resource_fields_testing)))
         response = {**a, "user": b}
         return response
+class UserIdsController(BaseController):
+    def __init__(self, model=UserModel):
+        super().__init__(model)
 
+    @marshal_with(resource_fields)
+    def post(self):
+        args = user_post_ids_args.parse_args()
+        #Get All by ids
+        a, b = self.callGetAllByIdsQuery(args['ids'])
+        response = {**a, "user": b}
+        return response
 #api.add_resource(User, "/user/<string:first_name>")
 api.add_resource(UserController, "/user/<string:id>")
 api.add_resource(UserAllController, "/user/all/")
 api.add_resource(UserQueryController, "/user/query/")
+api.add_resource(UserIdsController, "/user/ids/")
 # user = UserController(UserModel).get()

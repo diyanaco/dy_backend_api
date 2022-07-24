@@ -22,3 +22,6 @@ testing main
 # Alembic
 alembic revision --autogenerate -m "Added account table"
 alembic upgrade head
+
+When creating new link table, alembic won't be able to detect the changes, so need to "flask run" and create the link table first
+After the table is created then can do some manipulations on the table and alembic will be able to detect

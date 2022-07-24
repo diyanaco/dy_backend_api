@@ -28,7 +28,6 @@ resource_fields['user'] = fields.Nested(resource_fields_user)
 
 class UserController(BaseController):
     def __init__(self):
-        # super().__init__("user", resource_fields_user)
         self.model = UserModel
     
     @jwt_required()

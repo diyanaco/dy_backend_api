@@ -9,21 +9,28 @@ from backend.constants import APIconstants
 from model.sys.dy_shared_user import UserModel
 
 resource_fields = {
-    "status_code" : fields.Integer,
+    "status_code": fields.Integer,
     "message": fields.String,
 }
-#T = TypeVar('T')
+# T = TypeVar('T')
 
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
+
 class BaseController(Resource):
-    def __init__(self, model=None):
+    def __init__(self, model=None, ):
+        # self.resource_fields = {
+        #     "status_code": fields.Integer,
+        #     "message":fields.String,
+        #     "error": fields.String,
+        #     model_name : model_resource_field
+        # }
         self.resource_fields = {
             "status_code": fields.Integer,
-            "message":fields.String,
-            "error": fields.String
+            "message": fields.String,
+            "error": fields.String,
         }
         self.model = model
     

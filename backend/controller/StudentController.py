@@ -17,6 +17,9 @@ student_post_args = reqparse.RequestParser()
 student_post_args.add_argument("user_id", type=str, help="User ID of Student is required", required=True)
 student_post_args.add_argument("fav_sub", type=str, help="Fav subject of Student")
 
+student_post_query_args = reqparse.RequestParser()
+student_post_query_args.add_argument("fav_sub", type=str,help="Fav subject of the student")
+
 student_put_args = reqparse.RequestParser()
 student_put_args.add_argument("user_id", type=str,help="User ID of Student")
 student_put_args.add_argument("fav_sub", type=str,help="Fav subject of Student")
@@ -91,6 +94,18 @@ class StudentAllController(BaseController):
             print(i.user_id)
         response = {**a, "student": b}
         return response
+class StudentQueryController(BaseController):
+    def __init__(self):
+        # super().__init__("user", resource_fields_user)
+        self.model = StudentModel
+
+    @marshal_with(resource_fields)
+    def post(self):
+        args = student_post_query_args.parse_args()
+        a, b = self.callGetWhereQuery(args)
+        response = {**a, "student":b}
+        return response
 
 api.add_resource(StudentController, "/student/<string:id>", "/student/")
 api.add_resource(StudentAllController,"/student/all/")
+api.add_resource(StudentQueryController, "/student/query/")

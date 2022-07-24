@@ -9,7 +9,7 @@ class ClassModel(Base):
     name = Column(String(10))
     
     #Many to many relationship
-    student_id = relationship("StudentMedel", secondary=association_student_class_table)
+    student_id = relationship("StudentModel", secondary=association_student_class_table)
 
     def __repr__(self):
         return "<Class(name='%s')>" % (self.name)

@@ -1,28 +1,34 @@
+import uuid
 from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with
 # from backend.auth_middleware import token_required
 from backend.controller import BaseController
 from model.sub.sms.dy_sms_student import StudentModel
 from backend import api
+from sqlalchemy.orm import sessionmaker
+from backend import engine
 
-user_post_args = reqparse.RequestParser()
-user_post_args.add_argument("first_name", type=str, help="First name of the user is required", required=True)
-user_post_args.add_argument("last_name", type=str,help="Last name of the user", required=True)
-user_post_args.add_argument("email", type=str,help="Email of the user", required=True)
+Session = sessionmaker()
+Session.configure(bind=engine)
+session = Session()
 
-user_put_args = reqparse.RequestParser()
-user_put_args.add_argument("first_name", type=str,help="First name of the user is required")
-user_put_args.add_argument("last_name", type=str, help="Last name of the user")
+student_post_args = reqparse.RequestParser()
+student_post_args.add_argument("user_id", type=str, help="User ID of Student is required", required=True)
+student_post_args.add_argument("fav_sub", type=str, help="Fav subject of Student")
 
-resource_fields_user = {
-    "id": fields.Integer,
-    "last_name": fields.String,
-    "first_name": fields.String,
+student_put_args = reqparse.RequestParser()
+student_put_args.add_argument("user_id", type=str,help="User ID of Student")
+student_put_args.add_argument("fav_sub", type=str,help="Fav subject of Student")
+
+resource_fields_student = {
+    "id": fields.String,
+    "user_id": fields.String,
+    "fav_sub" : fields.String,
 }
 
 base = BaseController()
 resource_fields = base.resource_fields
-resource_fields['user'] = fields.Nested(resource_fields_user)
+resource_fields['student'] = fields.List(fields.Nested(resource_fields_student))
 
 
 
@@ -30,33 +36,54 @@ class StudentController(BaseController):
     def __init__(self):
         self.model = StudentModel
     
-    @jwt_required()
     @marshal_with(resource_fields)
     def get(self, id):
         a, b = self.callGetQuery(id)
-        response = {**a, "user": b}
+        response = {**a, "student": b}
         return response
 
     @marshal_with(resource_fields)
-    def post(self, id):
-        args = user_post_args.parse_args()
-        a, b = self.callPostQuery(id, args)
-        response = {**a, "user": b}
+    def post(self):
+        args = student_post_args.parse_args()
+        model = self.model(id=str(uuid.uuid4()), user_id= args["user_id"], fav_sub=args["fav_sub"])
+        a, b = self.callPostQuery(model)
+        response = {**a, "student": b}
         return response
 
     @marshal_with(resource_fields)
     def put(self, id):
-        args = user_put_args.parse_args()
-        a, b = self.callPutQuery(id, args)
-        response = {**a, "user": b}
+        args = student_put_args.parse_args()
+        returnData = self.queryStatement(id)
+        if not returnData:
+            abort(404, message="user doesn't exist, cannot update")
+        if args['user_id']:
+            returnData.user_id = args['user_id']
+        if args['fav_subject']:
+            returnData.fav_subject = args['fav_subject']
+        session.commit()
+        # a, b = self.callPutQuery(id, args)
+        response = {**self.callPutQuery(), "student": returnData}
         return response
 
     @marshal_with(resource_fields)
     def delete(self, id):
         a, b = self.callDeleteQuery(id)
-        response = {**a, "user": b}
+        response = {**a, "student": b}
         return response
 
-#api.add_resource(User, "/user/<string:first_name>")
-api.add_resource(StudentController, "/student/<int:id>")
-# user = StudentController(StudentModel).get()
+class StudentAllController(BaseController):
+    def __init__(self):
+        self.model = StudentModel
+
+    @marshal_with(resource_fields)
+    def get(self):
+        a, b = self.callGetAllQuery()
+        print(type(b))
+        for i in b:
+            print("Mualalala")
+            print(i.user_id)
+        response = {**a, "student": b}
+        return response
+
+api.add_resource(StudentController, "/student/<string:id>", "/student/")
+api.add_resource(StudentAllController,"/student/all/")

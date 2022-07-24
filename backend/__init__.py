@@ -25,7 +25,7 @@ CORS(app)
 # db_password = '0NLIN3-ex4m'
 # engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
 
-engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanacotest', echo=True)
+engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanaco', echo=True)
 Base = declarative_base()
 
 #another test
@@ -45,6 +45,7 @@ from model.sub.sms.dy_sms_class import ClassModel
 
 from backend.controller.UserController import UserController
 from backend.controller.UserAuthController import AuthLoginController, AuthSignupController
+from backend.controller.StudentController import StudentController
 
 #Only run once to create tables
 Base.metadata.create_all(engine)

@@ -1,3 +1,4 @@
+import argparse
 from flask import request
 from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with, marshal
@@ -20,6 +21,11 @@ user_post_args = reqparse.RequestParser()
 user_post_args.add_argument("first_name", type=str, help="First name of the user is required", required=True)
 user_post_args.add_argument("last_name", type=str,help="Last name of the user", required=True)
 user_post_args.add_argument("email", type=str,help="Email of the user", required=True)
+
+user_post_query_args = reqparse.RequestParser()
+user_post_query_args.add_argument("first_name", type=str, help="First name of the user is required")
+user_post_query_args.add_argument("last_name", type=str,help="Last name of the user")
+user_post_query_args.add_argument("email", type=str,help="Email of the user")
 
 user_put_args = reqparse.RequestParser()
 user_put_args.add_argument("first_name", type=str,help="First name of the user ")
@@ -84,14 +90,21 @@ class UserController(BaseController):
         a, b = self.callDeleteQuery(id)
         response = {**a, "user": b}
         return response
+
 #TODO #30 : Implement search by criteria
 class UserQueryController(BaseController):
     def __init__(self):
         # super().__init__("user", resource_fields_user)
         self.model = UserModel
+
     @marshal_with(resource_fields)
-    def get(self):
-        print("Hello Baby")
+    def post(self):
+        args = user_post_query_args.parse_args()
+        print("Hello World")
+        print(args)
+        a, b = self.callGetWhereQuery(args)
+        response = {**a, "user":b}
+        return response
 
 class UserAllController(BaseController):
     def __init__(self):
@@ -110,5 +123,5 @@ class UserAllController(BaseController):
 #api.add_resource(User, "/user/<string:first_name>")
 api.add_resource(UserController, "/user/<string:id>")
 api.add_resource(UserAllController, "/user/all/")
-api.add_resource(UserQueryController, "/user/query")
+api.add_resource(UserQueryController, "/user/query/")
 # user = UserController(UserModel).get()

@@ -8,7 +8,7 @@ GLOBAL_ID = ""
 
 async def test_post_user():
     BASE = "http://127.0.0.1:5000/"
-    rand = random.randint(0,9)
+    rand = random.randint(0,10000)
     request_dict = {
         "first_name": "Test User Diyana1213",
         "last_name": "From Client1",
@@ -60,10 +60,19 @@ async def test_put_user():
     BASE = "http://127.0.0.1:5000/"
     # response = requests.put(BASE + "user/" + GLOBAL_ID, json=request_dict)
     async with aiohttp.ClientSession() as session:
-            async with session.put(BASE + "user/" + GLOBAL_ID, json=request_dict) as response:
-                data = await response.json()
+        async with session.put(BASE + "user/" + GLOBAL_ID, json=request_dict) as response:
+            print(response.status)
+            data = await response.json()
+            print(data)
+            data_user = data['user']
+            print(data_user[0]['id'])
 
-    assert data, "modify FAILURE"
+    # assert data['user'] == request_dict, "modify FAILURE"
+    #TODO #38 Generalize the assert to all conditions
+    assert (
+            (data_user[0]['first_name'] == request_dict['first_name']) and
+            (data_user[0]['last_name'] == request_dict['last_name'])
+            ), "modify FAILURE"
 
 async def test_delete_user():
     BASE = "http://127.0.0.1:5000/"
@@ -80,8 +89,8 @@ async def test_delete_user():
 if __name__ == "__main__":
     asyncio.run(test_post_user())
     asyncio.run(test_get_user())
-    asyncio.run(test_delete_user())
     asyncio.run(test_put_user())
+    asyncio.run(test_delete_user())
     # asyncio.run(main())
 # test_get_user()
 # test_put_user()

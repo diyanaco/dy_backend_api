@@ -13,6 +13,8 @@ from flask_restful import abort, fields, marshal_with
 import uuid
 from flask_jwt_extended import create_access_token, create_refresh_token
 import datetime
+from backend.controller.UserController import  resource_fields_user
+
 resource_fields_user_auth = {
     "email": fields.String,
     "password" : fields.String,
@@ -23,6 +25,7 @@ resource_fields_user_auth = {
 base = BaseController()
 resource_fields = base.resource_fields
 resource_fields['user_auth'] = fields.Nested(resource_fields_user_auth)
+resource_fields['user'] = fields.Nested(resource_fields_user)
 
 Session = sessionmaker()
 Session.configure(bind=engine)
@@ -105,12 +108,14 @@ class AuthSignupController(BaseController):
                                                             last_name=userRequest['last_name'],
                                                             email=userRequest["email"], 
                                                             password=generate_password_hash(userRequest['password']),
-                                                            created_date=self.currentDateTime)
+                                                            created_date=self.currentDateTime,
+                                                            updated_date=self.currentDateTime)
             session.add(modifiedUser)
             session.commit()
             return {
                 "status_code" : 201,
                 "message": "Successfully created new user",
+                "user" : modifiedUser,
                 "user_auth": {
                     "email" : modifiedUser.email,
                     "password": modifiedUser.password,

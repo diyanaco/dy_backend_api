@@ -29,7 +29,8 @@ Session.configure(bind=engine)
 session = Session()
 
 class AuthLoginController(BaseController):
-    def get(self):
+    @marshal_with(resource_fields)
+    def post(self):
         print("hello")
         try:
             userRequest = request.json
@@ -54,10 +55,11 @@ class AuthLoginController(BaseController):
                     access_token = create_access_token(identity = user.id)
                     refresh_token = create_refresh_token(identity = user.id)
                     return {
+                        "status_code" : 200,
                         "message": "Successfully fetched auth token",
                         "user_auth": {
-                            "access-token" : access_token,
-                            "refresh-token" : refresh_token
+                            "access_token" : access_token,
+                            "refresh_token" : refresh_token
                         }
                     }
                 except Exception as e:
@@ -67,14 +69,12 @@ class AuthLoginController(BaseController):
                     }, 500
             return {
                 "message": "Error fetching auth token!, invalid email or password",
-                "data": None,
                 "error": "Unauthorized"
             }, 404
         except Exception as e:
             return {
                 "message": "Something went wrong!",
                 "error": str(e),
-                "data": None
             }, 500
 
 class AuthSignupController(BaseController):
@@ -104,7 +104,6 @@ class AuthSignupController(BaseController):
             modifiedUser = UserModel(id=str(uuid.uuid4()), first_name=userRequest["first_name"], last_name=userRequest['last_name'],email=userRequest["email"], password=generate_password_hash(userRequest['password']))
             session.add(modifiedUser)
             session.commit()
-            print("accesstoken is " + access_token)
             return {
                 "status_code" : 201,
                 "message": "Successfully created new user",

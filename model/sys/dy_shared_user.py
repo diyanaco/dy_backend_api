@@ -9,7 +9,8 @@ class UserModel(Base):
     last_name = Column(String(50))
     email = Column(String(50))
     password = Column(String(200))
-    student = relationship("Child", back_populates="parent")
+    
+    student = relationship("StudentModel", uselist=False, backref="dy_shared_user")
     
     def __repr__(self):
        return "<User(first_name='%s', last_name='%s')>" % (self.first_name, self.last_name)

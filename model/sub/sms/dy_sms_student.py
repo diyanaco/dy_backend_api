@@ -7,6 +7,10 @@ class StudentModel(Base):
     __tablename__="dy_sms_student"
     id = Column(String(50), primary_key=True)
     user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
-    class_id = relationship("Child", secondary=association_student_class_table)
-    parent = relationship("Parent", back_populates="children")
     fav_sub = Column(String(50))
+
+    #Many to Many 
+    class_id = relationship("ClassModel", secondary=association_student_class_table)
+
+    #Many to One
+    user = relationship("UserModel", backref="dy_sms_student")

@@ -25,7 +25,7 @@ CORS(app)
 # db_password = '0NLIN3-ex4m'
 # engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_url}/{db_name}')
 
-engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanaco', echo=True)
+engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanacotest', echo=True)
 Base = declarative_base()
 
 #another test

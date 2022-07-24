@@ -2,7 +2,7 @@ from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with
 # from backend.auth_middleware import token_required
 from backend.controller import BaseController
-from model.sys.dy_shared_user import UserModel
+from model.sub.sms.dy_sms_student import StudentModel
 from backend import api
 
 user_post_args = reqparse.RequestParser()
@@ -26,9 +26,9 @@ resource_fields['user'] = fields.Nested(resource_fields_user)
 
 
 
-class UserController(BaseController):
+class StudentController(BaseController):
     def __init__(self):
-        self.model = UserModel
+        self.model = StudentModel
     
     @jwt_required()
     @marshal_with(resource_fields)
@@ -58,5 +58,5 @@ class UserController(BaseController):
         return response
 
 #api.add_resource(User, "/user/<string:first_name>")
-api.add_resource(UserController, "/user/<int:id>")
-# user = UserController(UserModel).get()
+api.add_resource(StudentController, "/student/<int:id>")
+# user = StudentController(StudentModel).get()

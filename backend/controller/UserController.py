@@ -84,7 +84,7 @@ class UserController(BaseController):
         a, b = self.callDeleteQuery(id)
         response = {**a, "user": b}
         return response
-
+#TODO #30 : Implement search by criteria
 class UserQueryController(BaseController):
     def __init__(self):
         # super().__init__("user", resource_fields_user)

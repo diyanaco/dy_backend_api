@@ -39,11 +39,7 @@ class BaseController(Resource):
         self.currentDateTime = datetime.datetime.now().astimezone().isoformat()
     
     def callGetQuery(self, id,):
-        print(self)
         returnData = self.queryStatement(id)
-        print("Get by id")
-        print(returnData)
-        print(type(returnData))
         if not returnData:
             abort(404, message="Could not find user with that id")
         result = {
@@ -61,6 +57,17 @@ class BaseController(Resource):
             'message' : APIconstants.RETRIEVED,
         }
         return result, returnData
+
+    def callGetWhereQuery(self, whereCol):
+        returnData = self.queryStatement(whereCol=whereCol)
+        if not returnData:
+            abort(404, message="The table is empty")
+        result = {
+            'status_code': 200,
+            'message' : APIconstants.RETRIEVED,
+        }
+        return result, returnData
+
     def callPostQuery(self, modifiedData):
         # returnData = self.queryStatement(id)
         # if returnData:
@@ -101,12 +108,21 @@ class BaseController(Resource):
         }
         return response, returnData
 
-    def queryStatement(self,id=None):
+    def queryStatement(self,id=None, whereCol=None):
         #Will only get by id (Works for get/delete only)
         # For post, it is handled by child component
         if(id):
             stmt = select(self.model).where(self.model.id.in_([id]))
-            return session.scalars(stmt).first()
+            data = session.scalars(stmt).first()
+            return data
+        #Query based on col criteria
+        if(whereCol):
+            query = session.query(self.model)
+            for attr, value  in whereCol.items():
+                if value==None:
+                    continue
+                query = query.filter(getattr(self.model, attr).like("%%%s%%" % value))
+            return query
         #Will query all data
         else:
             # #users = (self.model).query.all()

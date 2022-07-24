@@ -9,6 +9,8 @@ from flask_restful import abort
 from backend.constants import APIconstants
 from model.sys.dy_shared_user import UserModel
 
+import datetime
+
 resource_fields = {
     "status_code": fields.Integer,
     "message": fields.String,
@@ -34,6 +36,7 @@ class BaseController(Resource):
             "error": fields.String,
         }
         self.model = model
+        self.currentDateTime = datetime.datetime.now().astimezone().isoformat()
     
     def callGetQuery(self, id,):
         print(self)
@@ -99,7 +102,8 @@ class BaseController(Resource):
         return response, returnData
 
     def queryStatement(self,id=None):
-        #Will only get by id
+        #Will only get by id (Works for get/delete only)
+        # For post, it is handled by child component
         if(id):
             stmt = select(self.model).where(self.model.id.in_([id]))
             return session.scalars(stmt).first()
@@ -113,7 +117,7 @@ class BaseController(Resource):
             #     print(type(row))
             # return session.execute(stmt).all()
             # TODO: #27 Implement order by updated_date
-            data = session.query(self.model).order_by(self.model.id)
+            data = session.query(self.model).order_by(self.model.updated_date.desc())
             # for instance in data :
             #     print("Kiki Lala")
             #     print(instance.user_id, instance.fav_sub)

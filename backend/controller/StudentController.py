@@ -6,6 +6,7 @@ from backend.controller import BaseController
 from model.sub.sms.dy_sms_student import StudentModel
 from backend import api
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import select
 from backend import engine
 
 Session = sessionmaker()
@@ -24,6 +25,8 @@ resource_fields_student = {
     "id": fields.String,
     "user_id": fields.String,
     "fav_sub" : fields.String,
+    "created_date" : fields.String,
+    "updated_date" : fields.String,
 }
 
 base = BaseController()
@@ -34,6 +37,7 @@ resource_fields['student'] = fields.List(fields.Nested(resource_fields_student))
 
 class StudentController(BaseController):
     def __init__(self):
+        super().__init__()
         self.model = StudentModel
     
     @marshal_with(resource_fields)
@@ -45,7 +49,7 @@ class StudentController(BaseController):
     @marshal_with(resource_fields)
     def post(self):
         args = student_post_args.parse_args()
-        model = self.model(id=str(uuid.uuid4()), user_id= args["user_id"], fav_sub=args["fav_sub"])
+        model = self.model(id=str(uuid.uuid4()), user_id= args["user_id"], fav_sub=args["fav_sub"], created_date=self.currentDateTime, updated_date=self.currentDateTime)
         a, b = self.callPostQuery(model)
         response = {**a, "student": b}
         return response
@@ -54,12 +58,15 @@ class StudentController(BaseController):
     def put(self, id):
         args = student_put_args.parse_args()
         returnData = self.queryStatement(id)
+        stmt = select(self.model).where(self.model.id.in_([id]))
+        returnData = session.scalars(stmt).first()
         if not returnData:
             abort(404, message="user doesn't exist, cannot update")
         if args['user_id']:
             returnData.user_id = args['user_id']
-        if args['fav_subject']:
-            returnData.fav_subject = args['fav_subject']
+        if args['fav_sub']:
+            returnData.fav_sub = args['fav_sub']
+        returnData.updated_date = self.currentDateTime
         session.commit()
         # a, b = self.callPutQuery(id, args)
         response = {**self.callPutQuery(), "student": returnData}

@@ -67,6 +67,16 @@ class BaseController(Resource):
             'message' : APIconstants.RETRIEVED,
         }
         return result, returnData
+    
+    def callGetAllByIdsQuery(self, ids):
+        returnData = self.queryStatement(ids=ids)
+        if not returnData:
+            abort(404, message="None of the Ids exist")
+        result = {
+            'status_code': 200,
+            'message' : APIconstants.RETRIEVED,
+        }
+        return result, returnData
 
     def callPostQuery(self, modifiedData):
         # returnData = self.queryStatement(id)
@@ -108,15 +118,27 @@ class BaseController(Resource):
         }
         return response, returnData
 
-    def queryStatement(self,id=None, whereCol=None):
+    def queryStatement(self,id=None, whereCol=None, ids=None):
         #Will only get by id (Works for get/delete only)
         # For post, it is handled by child component
         if(id):
             stmt = select(self.model).where(self.model.id.in_([id]))
             data = session.scalars(stmt).first()
             return data
+        #Will return list of models
+        if(ids):
+            data = []
+            for id in ids :
+                data_element = session.query(self.model).get(id)
+                if data_element == None:
+                    continue
+                data.append(data_element)              
+            return data
         #Query based on col criteria
         if(whereCol):
+            #The query is outside of the loop is because the filter function
+            #will chain the criteria fields. So the the session query is called 
+            #only once.
             query = session.query(self.model)
             for attr, value  in whereCol.items():
                 if value==None:

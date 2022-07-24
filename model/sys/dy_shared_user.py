@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from backend import Base
 
 class UserModel(Base):
@@ -8,6 +9,7 @@ class UserModel(Base):
     last_name = Column(String(50))
     email = Column(String(50))
     password = Column(String(200))
+    student = relationship("Child", back_populates="parent")
     
     def __repr__(self):
        return "<User(first_name='%s', last_name='%s')>" % (self.first_name, self.last_name)

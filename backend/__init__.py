@@ -40,6 +40,9 @@ from model.sys.dy_shared_user import UserModel
 from model.sub.sms.dy_sms_subject import SubjectModel
 from model.sub.sms.dy_sms_level import LevelModel
 from model.sub.sms.dy_sms_package import PackageModel
+from model.sub.sms.dy_sms_student import StudentModel
+from model.sub.sms.dy_sms_class import ClassModel
+
 from backend.controller.UserController import UserController
 from backend.controller.UserAuthController import AuthLoginController, AuthSignupController
 

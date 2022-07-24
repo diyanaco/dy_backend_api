@@ -18,3 +18,7 @@ scp /deployment/__init__.py root@172.104.188.38:/root/diyanaco/__init__.py
 hehe testing clickup integrations
 
 testing main
+
+# Alembic
+alembic revision --autogenerate -m "Added account table"
+alembic upgrade head

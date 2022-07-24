@@ -28,3 +28,9 @@ After the table is created then can do some manipulations on the table and alemb
 
 # SQLAlchemy
 query data and session commit must present in the same app context (meaning same function or file)
+
+# Pip Freeze
+## To append to existing requirements.txt
+pip freeze > requirements.txt
+## To create new requirements.txt
+pipi freeze -r requirements.txt

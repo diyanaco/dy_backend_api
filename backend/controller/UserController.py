@@ -38,6 +38,7 @@ resource_fields_user = {
     "id": fields.String,
     "last_name": fields.String,
     "first_name": fields.String,
+    "email" : fields.String,
     "created_date" : fields.DateTime,
     "updated_date" : fields.DateTime,
 }

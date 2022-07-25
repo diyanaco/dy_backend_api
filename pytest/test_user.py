@@ -1,14 +1,16 @@
-import pytest
+import global_fields
 import requests
 import asyncio
 import aiohttp
 import random
+import pytest
 
 GLOBAL_ID = ""
+BASE = "http://127.0.0.1:5000/"
 rand = random.randint(0,10000)
-
+#TODO #40 Fixe on test put for pytest
+@pytest.mark.asyncio
 async def test_post_user():
-    BASE = "http://127.0.0.1:5000/"
     request_dict = {
         "first_name": "Test User Diyana1213",
         "last_name": "From Client1",
@@ -19,25 +21,22 @@ async def test_post_user():
     # response = s.post(BASE + "user/signup", json=request_dict)
     # print(response.json()['user'])
     global GLOBAL_ID 
-    print(request_dict)
     async with aiohttp.ClientSession() as session:
         async with session.post(BASE + "user/signup", json=request_dict) as response:
             data = await response.json()
             data_user = data['user']
+            print(data['user'])
             GLOBAL_ID = data_user['id']
+            global_fields.GLOBAL_USER_ID = GLOBAL_ID
             assert GLOBAL_ID, "GLOBAL_ID does not exist"
-
     for key, value in request_dict.items():
         if key=="password":continue
-        print(value)
-        print(data_user[key])
         assert value == data_user[key], "create FAILURE key"
 
     #assert x == y , "test failed"
 
-
+@pytest.mark.asyncio
 async def test_get_user():
-    BASE = "http://127.0.0.1:5000/"
     # response = requests.get(BASE + "user/" + GLOBAL_ID)
     headers = {
         'content-type': 'application/json',
@@ -55,15 +54,14 @@ async def test_get_user():
     assert data, "retrieve FAILURE"
     #assert x == y , "test failed"
 
-
+@pytest.mark.asyncio
 async def test_put_user():
     request_dict = {
-        "first_name": "Test User Diyana aUpdated",
+        "first_name": "Test User Diyana Updated",
         "last_name": "From Client Updated",
         "email": str(rand) + "@diyana.co",
         "password": "123"
     }
-    BASE = "http://127.0.0.1:5000/"
     # response = requests.put(BASE + "user/" + GLOBAL_ID, json=request_dict)
     async with aiohttp.ClientSession() as session:
         async with session.put(BASE + "user/" + GLOBAL_ID, json=request_dict) as response:
@@ -85,17 +83,18 @@ async def test_put_user():
     #         (data_user[0]['last_name'] == request_dict['last_name'])
     #         ), "modify FAILURE"
 
+@pytest.mark.asyncio
 async def test_delete_user():
-    BASE = "http://127.0.0.1:5000/"
     # response = requests.delete(BASE + "user/" + GLOBAL_ID)
+    # if global_id_optional : id = global_id_optional
+    # else : id = GLOBAL_ID
     async with aiohttp.ClientSession() as session:
-        async with session.delete(BASE + "user/" + GLOBAL_ID) as response:
+        async with session.delete(BASE + "user/"  + GLOBAL_ID ) as response:
             data = await response.json()
             data_user = data['user']
             data_user_first = data_user[0]
     
     assert data_user_first['id'] == GLOBAL_ID, "remove FAILURE"
-
 
 # Calling Functions
 if __name__ == "__main__":

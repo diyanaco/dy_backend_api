@@ -16,3 +16,6 @@ class StudentModel(Base):
 
     #Many to One
     user = relationship("UserModel", backref="dy_sms_student")
+
+    def __repr__(self):
+       return "<Subject(name='%s',user_id='%s', fav_sub='%s'.)>" % (self.name, self.user_id, self.fav_sub)

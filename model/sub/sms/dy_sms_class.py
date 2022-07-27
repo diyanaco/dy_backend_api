@@ -12,4 +12,4 @@ class ClassModel(Base):
     student_id = relationship("StudentModel", secondary=association_student_class_table)
 
     def __repr__(self):
-        return "<Class(name='%s')>" % (self.name)
+        return "<Class(name='%s', student_id'%s')>" % (self.name, self.student_id)

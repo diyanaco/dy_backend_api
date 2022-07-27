@@ -16,9 +16,17 @@ session = Session()
 student_post_args = reqparse.RequestParser()
 student_post_args.add_argument("user_id", type=str, help="User ID of Student is required", required=True)
 student_post_args.add_argument("fav_sub", type=str, help="Fav subject of Student")
+student_post_args.add_argument("guardian_id", type=str, help="Guardian of Student")
+student_post_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_post_args.add_argument("education_id", type=str, help="Education of Student")
+student_post_args.add_argument("level_id", type=str, help="Level of Student")
 
 student_post_query_args = reqparse.RequestParser()
 student_post_query_args.add_argument("fav_sub", type=str,help="Fav subject of the student")
+student_post_query_args.add_argument("guardian_id", type=str, help="Guardian of Student")
+student_post_query_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_post_query_args.add_argument("education_id", type=str, help="Education of Student")
+student_post_query_args.add_argument("level_id", type=str, help="Level of Student")
 
 student_post_ids_args = reqparse.RequestParser()
 student_post_ids_args.add_argument("ids", type=str, action="append", help="List of Ids must at least have one")
@@ -26,11 +34,18 @@ student_post_ids_args.add_argument("ids", type=str, action="append", help="List 
 student_put_args = reqparse.RequestParser()
 student_put_args.add_argument("user_id", type=str,help="User ID of Student")
 student_put_args.add_argument("fav_sub", type=str,help="Fav subject of Student")
-
+student_put_args.add_argument("guardian_id", type=str, help="Guardian of Student")
+student_put_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_put_args.add_argument("education_id", type=str, help="Education of Student")
+student_put_args.add_argument("level_id", type=str, help="Level of Student")
 resource_fields_student = {
     "id": fields.String,
     "user_id": fields.String,
     "fav_sub" : fields.String,
+    "guardian_id" : fields.String,
+    "package_set_id" : fields.String,
+    "education_id" : fields.String,
+    "level_id" : fields.String,
     "created_date" : fields.String,
     "updated_date" : fields.String,
 }

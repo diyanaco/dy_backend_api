@@ -1,3 +1,4 @@
+from colorama import Fore
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, DateTime
 from sqlalchemy.orm import relationship
 from model.sub.sms.dy_sms_student_class_link import  association_student_class_table
@@ -8,8 +9,13 @@ class StudentModel(Base):
     id = Column(String(50), primary_key=True)
     user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
     fav_sub = Column(String(50))
+    guardian_id = Column(String(50), ForeignKey("dy_sms_guardian.id"))
+    package_set_id = Column(String(50), ForeignKey("dy_sms_package.id"))
+    education_id = Column(String(50), ForeignKey("dy_shared_education.id"))
+    level_id = Column(String(50), ForeignKey("dy_sms_level.id"))
     created_date = Column(DateTime)
     updated_date = Column(DateTime)
+    #TODO #48 Implement created and updated by user_id
 
     #Many to Many 
     class_id = relationship("ClassModel", secondary=association_student_class_table)

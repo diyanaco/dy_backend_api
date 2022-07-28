@@ -5,6 +5,7 @@ class LevelModel(Base):
     __tablename__ = 'dy_sms_level'
     id = Column(String(50), primary_key=True)
     name = Column(String(50))
+    rank = Column(Integer)
     
     def __repr__(self):
        return "<Subject(name='%s')>" % (self.name)

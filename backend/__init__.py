@@ -49,6 +49,9 @@ from model.sub.sms.dy_sms_package_set import PackageSetModel
 from backend.controller.UserController import UserController
 from backend.controller.UserAuthController import AuthLoginController, AuthSignupController
 from backend.controller.StudentController import StudentController
+from backend.controller.LevelController import LevelController
+from backend.controller.SubjectController import SubjectController
+
 
 #Only run once to create tables
 Base.metadata.create_all(engine)

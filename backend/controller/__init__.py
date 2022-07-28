@@ -143,6 +143,9 @@ class BaseController(Resource):
             for attr, value  in whereCol.items():
                 if value==None:
                     continue
+                #TODO #52 Change "and" to "or" filtering, 
+                #futhermore, user can choose what operator to be,
+                #operator : [=,&, |] for numbers : [<,>]
                 query = query.filter(getattr(self.model, attr).like("%%%s%%" % value))
             return query
         #Will query all data

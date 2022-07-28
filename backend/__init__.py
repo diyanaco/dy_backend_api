@@ -3,7 +3,7 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from flask_restful import Api
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -28,9 +28,10 @@ CORS(app)
 engine = create_engine('mysql://miazocool:Muhammad261814+@localhost:3306/diyanaco', echo=True)
 Base = declarative_base()
 
-#another test
-
-Session = sessionmaker()
+#Scoded session is used to handle concurrent data (meaning many data at once)
+#The conventional way of binding with sessionmaker only works only generate one 
+#session at a time
+Session = scoped_session(sessionmaker())
 Session.configure(bind=engine)
 session = Session()
 

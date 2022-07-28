@@ -6,6 +6,9 @@ import global_fields
 import random
 import string
 import pytest
+from flask import Flask
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base
 
 GLOBAL_ID = ""
 ENDPOINT_MODEL_URL = "student/"
@@ -15,7 +18,6 @@ rand = random.randint(0, 10000)
 letters = string.ascii_lowercase
 randomFavSub = ""
 randomFavSub.join(random.choice(letters) for i in range(10))
-
 
 @pytest.mark.asyncio
 async def test_post_student():
@@ -72,12 +74,9 @@ async def test_put_student():
         'Accepts': 'application/json'
     }
     async with aiohttp.ClientSession(headers=headers) as session:
-        print(GLOBAL_ID)
-        print(request_dict)
         await asyncio.sleep(5)
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
-            print(response.status)
-            if response.status == 200:
+            if await  response.status == 200:
                 data = await response.json()
                 data_student = data['student']
                 data_student_first = data_student[0]

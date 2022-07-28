@@ -15,6 +15,7 @@ class StudentModel(Base):
     level_id = Column(String(50), ForeignKey("dy_sms_level.id"))
     created_date = Column(DateTime)
     updated_date = Column(DateTime)
+    #TODO #51 Add status of user (registred, confirmed)
     #TODO #48 Implement created and updated by user_id
 
     #Many to Many 

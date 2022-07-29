@@ -92,6 +92,7 @@ class LevelAllController(BaseController):
 
     @marshal_with(resource_fields)
     def get(self):
+        print("level")
         a, b = self.callGetAllQuery()
         response = {**a, view: b}
         return response

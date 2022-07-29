@@ -83,6 +83,7 @@ class SubjectAllController(BaseController):
 
     @marshal_with(resource_fields)
     def get(self):
+        print("subject")
         a, b = self.callGetAllQuery()
         response = {**a, view: b}
         return response

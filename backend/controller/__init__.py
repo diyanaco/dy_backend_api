@@ -157,9 +157,28 @@ class BaseController(Resource):
             #     print(row.first_name)
             #     print(type(row))
             # return session.execute(stmt).all()
-            # TODO: #27 Implement order by updated_date
-            data = session.query(self.model).order_by(self.model.updated_date.desc())
+            with engine.connect() as connection:
+                with connection.begin():
+                    result = connection.execute(select(self.model)).fetchall()
+            # data = session.query(self.model).order_by(self.model.updated_date.desc()).fetchall()
             # for instance in data :
             #     print("Kiki Lala")
             #     print(instance.user_id, instance.fav_sub)
-            return data
+            return result
+
+#Nesting connection
+# # method_a starts a transaction and calls method_b
+# def method_a(connection):
+#     with connection.begin():  # open a transaction
+#         method_b(connection)
+
+# # method_b also starts a transaction
+# def method_b(connection):
+#     with connection.begin(): # open a transaction - this runs in the
+#                              # context of method_a's transaction
+#         connection.execute(text("insert into mytable values ('bat', 'lala')"))
+#         connection.execute(mytable.insert(), {"col1": "bat", "col2": "lala"})
+
+# # open a Connection and call method_a
+# with engine.connect() as conn:
+#     method_a(conn)

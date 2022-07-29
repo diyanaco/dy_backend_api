@@ -45,6 +45,7 @@ from model.sub.sms.dy_sms_class import ClassModel
 from model.sub.sms.dy_sms_guardian import GuardianModel
 from model.sys.dy_shared_education import EducationModel
 from model.sub.sms.dy_sms_package_set import PackageSetModel
+from model.sys.dy_shared_branch import  BranchModel
 
 from backend.controller.UserController import UserController
 from backend.controller.UserAuthController import AuthLoginController, AuthSignupController

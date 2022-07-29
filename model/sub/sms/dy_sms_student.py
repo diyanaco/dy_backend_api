@@ -11,7 +11,7 @@ class StudentModel(Base):
     user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
     fav_sub = Column(String(50))
     guardian_id = Column(String(50), ForeignKey("dy_sms_guardian.id"))
-    education_id = Column(String(50), ForeignKey("dy_shared_education.id"))
+    branch_id = Column(String(50), ForeignKey("dy_shared_branch.id"))
     level_id = Column(String(50), ForeignKey("dy_sms_level.id"))
     created_date = Column(DateTime)
     updated_date = Column(DateTime)

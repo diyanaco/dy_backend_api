@@ -11,3 +11,6 @@ class PackageSetModel(Base):
     update_date = Column(DateTime)
     #Many to many relationship
     student_id = relationship("StudentModel", secondary=association_student_package_set_table)
+
+    def __repr__(self) -> str:
+        return "<PackageSet(name='%s')>" % (self.name)

@@ -70,11 +70,8 @@ async def test_put_level():
         'Accepts': 'application/json'
     }
     async with aiohttp.ClientSession(headers=headers) as session:
-        print(GLOBAL_ID)
-        print(request_dict)
         await asyncio.sleep(5)
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
-            print(response.status)
             if response.status == 200:
                 data = await response.json()
                 data_level = data['level']

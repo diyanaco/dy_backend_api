@@ -1,7 +1,6 @@
 import asyncio
 import aiohttp
 import random
-from test_user import test_post_user, test_delete_user
 import global_fields
 import random
 import string
@@ -72,11 +71,8 @@ async def test_put_student():
         'Accepts': 'application/json'
     }
     async with aiohttp.ClientSession(headers=headers) as session:
-        print(GLOBAL_ID)
-        print(request_dict)
         await asyncio.sleep(5)
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
-            print(response.status)
             if response.status == 200:
                 data = await response.json()
                 data_student = data['student']
@@ -106,10 +102,7 @@ async def test_delete_student():
 
 # Calling Functions
 if __name__ == "__main__":
-    # Need to retrieve the userID first
-    # asyncio.run(test_post_user())
     asyncio.run(test_post_student())
     asyncio.run(test_get_student())
     asyncio.run(test_put_student())
     asyncio.run(test_delete_student())
-    # asyncio.run(test_delete_user(global_fields.GLOBAL_USER_ID))

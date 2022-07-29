@@ -1,7 +1,6 @@
 import asyncio
 import aiohttp
 import random
-from test_user import test_post_user, test_delete_user
 import global_fields
 import random
 import string
@@ -20,7 +19,6 @@ randomFavSub.join(random.choice(letters) for i in range(10))
 @pytest.mark.asyncio
 async def test_post_subject():
     request_dict = {
-        "user_id": "0e4c1d44-04f6-4a26-a02d-8e67a91b00f1",
         "name": "Science"
     }
 
@@ -64,7 +62,6 @@ async def test_put_subject():
     randomFavSub = ""
     randomFavSub = randomFavSub.join(random.choice(letters) for i in range(10))
     request_dict = {
-        "user_id": "0e4c1d44-04f6-4a26-a02d-8e67a91b00f1",
         "name": "Subject" + randomFavSub
     }
     headers = {

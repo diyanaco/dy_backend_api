@@ -7,7 +7,7 @@ class GuardianModel(Base):
     primary_user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
     secondary_user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
     created_date = Column(DateTime)
-    update_date = Column(DateTime)
+    updated_date = Column(DateTime)
 
     def __repr__(self) -> str:
         return "<Guardian(primary_name='%s', secondary_name='%s')" % (

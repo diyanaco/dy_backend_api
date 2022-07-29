@@ -7,12 +7,13 @@ from backend import api
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from backend import engine
+from model.sys.dy_shared_branch import BranchModel
 
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 base = BaseController()
-Model = GuardianModel
+Model = BranchModel
 field1 = "name"
 field2 = "type"
 view = "branch"
@@ -63,8 +64,8 @@ class BranchController(BaseController):
     def post(self):
         args = guardian_post_args.parse_args()
         model = self.model(id=str(uuid.uuid4()),
-                           primary_user_id=args[field1],
-                           secondary_user_id=args[field2],
+                           name=args[field1],
+                           type=args[field2],
                            created_date=self.currentDateTime,
                            updated_date=self.currentDateTime)
         a, b = self.callPostQuery(model)
@@ -79,9 +80,9 @@ class BranchController(BaseController):
         if not returnData:
             abort(404, message="guardian doesn't exist, cannot update")
         if args[field1]:
-            returnData.primary_user_id = args[field1]
-        if args['secondary_user_id']:
-            returnData.secondary_user_id = args['secondary_user_id']
+            returnData.name = args[field1]
+        if args[field2]:
+            returnData.type = args[field2]
         returnData.updated_date = self.currentDateTime
         session.commit()
         response = {**self.callPutQuery(), view: returnData}

@@ -8,7 +8,7 @@ class BranchModel(Base):
     type = Column(String(50))
     education_id = Column(String(50), ForeignKey("dy_shared_education.id"))
     created_date = Column(DateTime)
-    update_date = Column(DateTime)
+    updated_date = Column(DateTime)
 
     def __repr__(self):
         return "<Branch(name='%s', type='%s')>" % (self.name, self.type)

@@ -52,7 +52,8 @@ from backend.controller.UserAuthController import AuthLoginController, AuthSignu
 from backend.controller.StudentController import StudentController
 from backend.controller.LevelController import LevelController
 from backend.controller.SubjectController import SubjectController
-
+from backend.controller.GuardianController import GuardianController
+from backend.controller.BranchController import BranchController
 
 #Only run once to create tables
 Base.metadata.create_all(engine)

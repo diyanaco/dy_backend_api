@@ -17,8 +17,8 @@ randomFavSub.join(random.choice(letters) for i in range(10))
 @pytest.mark.asyncio
 async def test_post_guardian():
     request_dict = {
-        "primary_user_id": "Form Test 123",
-        "secondary_user_id": "tuition"
+        "primary_user_id": "012dc0bb-46ff-493f-9374-cf075292091a",
+        "secondary_user_id": "02f78ea3-f9c2-4036-8d63-d9ae172a02de"
     }
 
     global GLOBAL_ID
@@ -61,8 +61,8 @@ async def test_put_guardian():
     randomFavSub = ""
     randomFavSub = randomFavSub.join(random.choice(letters) for i in range(10))
     request_dict = {
-        "primary_user_id": "Guardian" + randomFavSub,
-        "secondary_user_id": "tuition ++"
+        "primary_user_id": "0610076a-40c9-4cc1-bf19-88ec491478c4",
+        "secondary_user_id": "062fbc08-0092-420a-886c-c1b0b97dcc2a"
     }
     headers = {
         'content-type': 'application/json',

@@ -39,8 +39,8 @@ resource_fields_user = {
     "last_name": fields.String,
     "first_name": fields.String,
     "email" : fields.String,
-    "created_date" : fields.DateTime,
-    "updated_date" : fields.DateTime,
+    "created_date" : fields.String,
+    "updated_date" : fields.String,
 }
 
 base = BaseController()
@@ -57,9 +57,6 @@ class UserController(BaseController):
     def get(self, id):
         #Get by Id
         a, b = self.callGetQuery(id)
-        print("FirstName")
-        print(b.first_name)
-
         response = {**a, "user": b}
         return response
 
@@ -74,10 +71,9 @@ class UserController(BaseController):
     @marshal_with(resource_fields)
     def put(self, id):
         args = user_put_args.parse_args()
-        # a, b = self.callPutQuery(id, args)
-        #returnData = self.queryStatement(id)
-        stmt = select(self.model).where(self.model.id.in_([id]))
-        returnData =  session.scalars(stmt).first()
+        returnData = self.queryStatement(id)
+        # stmt = select(self.model).where(self.model.id.in_([id]))
+        # returnData =  session.scalars(stmt).first()
         if not returnData:
             abort(404, message="user doesn't exist, cannot update")
         if args['first_name']:

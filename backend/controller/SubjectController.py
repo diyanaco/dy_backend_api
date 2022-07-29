@@ -60,8 +60,8 @@ class SubjectController(BaseController):
     def put(self, id):
         args = subject_put_args.parse_args()
         returnData = self.queryStatement(id)
-        stmt = select(self.model).where(self.model.id.in_([id]))
-        returnData = session.scalars(stmt).first()
+        # stmt = select(self.model).where(self.model.id.in_([id]))
+        # returnData = session.scalars(stmt).first()
         if not returnData:
             abort(404, message="subject doesn't exist, cannot update")
         if args['name']:

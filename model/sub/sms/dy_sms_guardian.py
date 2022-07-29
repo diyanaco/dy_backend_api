@@ -1,11 +1,11 @@
 from backend import Base
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, ForeignKey, String, DateTime
 
 class GuardianModel(Base):
     __tablename__ = "dy_sms_guardian"
     id = Column(String(50), primary_key=True)
-    primary_name = Column(String(50))
-    secondary_name = Column(String(50))
+    primary_user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
+    secondary_user_id = Column(String(50), ForeignKey("dy_shared_user.id"))
     created_date = Column(DateTime)
     update_date = Column(DateTime)
 

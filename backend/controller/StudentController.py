@@ -52,6 +52,9 @@ resource_fields_student = {
 
 base = BaseController()
 resource_fields = base.resource_fields
+#TODO #53 change student to data 
+#In frontend, the response key is data
+#Need to change to all controller
 resource_fields['student'] = fields.List(fields.Nested(resource_fields_student))
 view = "student"
 

@@ -5,6 +5,7 @@ import global_fields
 import random
 import string
 import pytest
+import global_fields
 
 GLOBAL_ID = ""
 ENDPOINT_MODEL_URL = "subject/"
@@ -30,6 +31,7 @@ async def test_post_subject():
                 data_subject = data['subject']
                 data_subject_first = data_subject[0]
                 GLOBAL_ID = data_subject_first['id']
+                global_fields.CROSS_SUBJECT_ID_1 = GLOBAL_ID
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
             else:
                 data = await response.text()
@@ -80,7 +82,8 @@ async def test_put_subject():
                 data_subject_first = data_subject[0]
             else:
                 data = await response.text()
-                assert False, "modify Failure response is text " + str(response.status)
+                assert False, "modify Failure response is text " + \
+                    str(response.status)
 
     # TODO #38 Generalize the assert to all conditions
     for key, value in request_dict.items():
@@ -100,6 +103,25 @@ async def test_delete_subject():
                 assert False, "delete Failure response is text"
 
     assert data_subject_first['id'] == GLOBAL_ID, "remove FAILURE"
+
+@pytest.mark.asyncio
+async def test_get_all_subject():
+    async with aiohttp.ClientSession() as session:
+        async with session.get(URL + "all") as response:
+            print("URl is '%s' " % (URL))
+            if response.status == 200:
+                data = await response.json()
+                data_subject = data['subject']
+                totalRecords = len(data_subject)
+                global_fields.CROSS_SUBJECT_ID_1 = data_subject[0]['id']
+                #Last subject ID
+                global_fields.CROSS_SUBJECT_ID_2 = data_subject[totalRecords - 1]['id']
+
+            else:
+                data = response.text()
+                assert False, "getAll Failure response is text"
+
+    assert totalRecords, "getAll FAILURE"
 
 # Calling Functions
 if __name__ == "__main__":

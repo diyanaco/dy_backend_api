@@ -7,7 +7,6 @@ from backend import api
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from backend import engine
-from model.sys.dy_shared_branch import ClassModel
 
 Session = sessionmaker()
 Session.configure(bind=engine)

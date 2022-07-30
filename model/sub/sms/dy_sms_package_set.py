@@ -8,7 +8,7 @@ class PackageSetModel(Base):
     id = Column(String(50), primary_key=True)
     name = Column(String(50))
     created_date = Column(DateTime)
-    update_date = Column(DateTime)
+    updated_date = Column(DateTime)
     #Many to many relationship
     student_id = relationship("StudentModel", secondary=association_student_package_set_table)
 

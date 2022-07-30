@@ -4,6 +4,10 @@ import random
 import random
 import string
 import pytest
+import global_fields
+from test_level import test_get_all_level
+from test_package_set import test_get_all_package_set
+from test_subject import test_get_all_subject
 
 GLOBAL_ID = ""
 ENDPOINT_MODEL_URL = "package/"
@@ -14,15 +18,17 @@ letters = string.ascii_lowercase
 randomFavSub = ""
 randomFavSub.join(random.choice(letters) for i in range(10))
 
+
 @pytest.mark.asyncio
 async def test_post_package():
     request_dict = {
         "name": "Class Test 123",
-        "level_id": "Class Test 123",
-        "package_set_id": "Class Test 123",
-        "subject_id": "Class Test 123",
+        "level_id": global_fields.CROSS_LEVEL_ID_1,
+        "package_set_id": global_fields.CROSS_PACKAGE_SET_ID_1,
+        "subject_id": global_fields.CROSS_SUBJECT_ID_1,
     }
-
+    for i, j in request_dict.items():
+        print("The key value are : '%s' and '%s'" % (i, j))
     global GLOBAL_ID
     async with aiohttp.ClientSession() as session:
         async with session.post(URL, json=request_dict) as response:
@@ -64,9 +70,9 @@ async def test_put_package():
     randomFavSub = randomFavSub.join(random.choice(letters) for i in range(10))
     request_dict = {
         "name": "Guardian" + randomFavSub,
-        "level_id": "Class dasdas 123",
-        "package_set_id": "dasdas Test 123",
-        "subject_id": "Class dasdas 123",
+        "level_id": global_fields.CROSS_LEVEL_ID_2,
+        "package_set_id":global_fields.CROSS_PACKAGE_SET_ID_2,
+        "subject_id": global_fields.CROSS_SUBJECT_ID_2,
     }
     headers = {
         'content-type': 'application/json',
@@ -81,7 +87,8 @@ async def test_put_package():
                 data_package_first = data_package[0]
             else:
                 data = await response.text()
-                assert False, "modify Failure response is text " + str(response.status)
+                assert False, "modify Failure response is text " + \
+                    str(response.status)
 
     # TODO #38 Generalize the assert to all conditions
     for key, value in request_dict.items():
@@ -104,6 +111,9 @@ async def test_delete_package():
 
 # Calling Functions
 if __name__ == "__main__":
+    asyncio.run(test_get_all_level())
+    asyncio.run(test_get_all_package_set())
+    asyncio.run(test_get_all_subject())
     asyncio.run(test_post_package())
     asyncio.run(test_get_package())
     asyncio.run(test_put_package())

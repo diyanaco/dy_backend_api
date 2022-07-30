@@ -4,6 +4,7 @@ import random
 import random
 import string
 import pytest
+import global_fields
 
 GLOBAL_ID = ""
 ENDPOINT_MODEL_URL = "level/"
@@ -78,7 +79,8 @@ async def test_put_level():
                 data_level_first = data_level[0]
             else:
                 data = await response.text()
-                assert False, "modify Failure response is text " + str(response.status)
+                assert False, "modify Failure response is text " + \
+                    str(response.status)
 
     # TODO #38 Generalize the assert to all conditions
     for key, value in request_dict.items():
@@ -99,6 +101,25 @@ async def test_delete_level():
 
     assert data_level_first['id'] == GLOBAL_ID, "remove FAILURE"
 
+@pytest.mark.asyncio
+async def test_get_all_level():
+    async with aiohttp.ClientSession() as session:
+        async with session.get(URL + "all") as response:
+            print("URl is '%s' " % (URL))
+            if response.status == 200:
+                data = await response.json()
+                data_level = data['level']
+                totalRecords = len(data_level)
+                global_fields.CROSS_LEVEL_ID_1 = data_level[0]['id']
+                #Last level ID
+                global_fields.CROSS_LEVEL_ID_2 = data_level[totalRecords - 1]['id']
+
+            else:
+                data = response.text()
+                assert False, "getAll Failure response is text"
+
+    assert totalRecords, "getAll FAILURE"
+
 # Calling Functions
 if __name__ == "__main__":
     # Need to retrieve the userID first
@@ -107,4 +128,5 @@ if __name__ == "__main__":
     asyncio.run(test_get_level())
     asyncio.run(test_put_level())
     asyncio.run(test_delete_level())
+    asyncio.run(test_get_all_level())
     # asyncio.run(test_delete_user(global_fields.GLOBAL_USER_ID))

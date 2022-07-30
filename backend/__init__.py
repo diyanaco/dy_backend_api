@@ -54,6 +54,11 @@ from backend.controller.LevelController import LevelController
 from backend.controller.SubjectController import SubjectController
 from backend.controller.GuardianController import GuardianController
 from backend.controller.BranchController import BranchController
+from backend.controller.ClassController import ClassController
+from backend.controller.EmployeeController import EmployeeController
+from backend.controller.PackageController import PackageController
+from backend.controller.PackageSetController import PackageSetController
+from backend.controller.PaymentController import PaymentController
 
 #Only run once to create tables
 Base.metadata.create_all(engine)

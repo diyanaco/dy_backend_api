@@ -18,7 +18,7 @@ randomFavSub.join(random.choice(letters) for i in range(10))
 async def test_post_employee():
     request_dict = {
         "name": "Class Test 123",
-        "user_id": "asdasd"
+        "user_id": "0e4c1d44-04f6-4a26-a02d-8e67a91b00f1"
     }
 
     global GLOBAL_ID
@@ -62,7 +62,7 @@ async def test_put_employee():
     randomFavSub = randomFavSub.join(random.choice(letters) for i in range(10))
     request_dict = {
         "name": "Guardian" + randomFavSub,
-        "user_id": "asdasdas",
+        "user_id": "0e4c1d44-04f6-4a26-a02d-8e67a91b00f1",
     }
     headers = {
         'content-type': 'application/json',

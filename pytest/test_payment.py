@@ -18,7 +18,7 @@ randomFavSub.join(random.choice(letters) for i in range(10))
 async def test_post_payment():
     request_dict = {
         "name": "Form Test 123",
-        "student_id": "tuition",
+        "student_id": "043c42a8-a026-4368-86c2-a67cf80897db",
         "amount":10.10
     }
 
@@ -36,7 +36,7 @@ async def test_post_payment():
                 assert False, 'retrieve Failure response is text'
 
     for key, value in request_dict.items():
-        assert value == data_payment_first[key], "create FAILURE key" + key
+        assert value == data_payment_first[key], "create FAILURE key " + key
 
 
 @pytest.mark.asyncio
@@ -63,7 +63,7 @@ async def test_put_payment():
     randomFavSub = randomFavSub.join(random.choice(letters) for i in range(10))
     request_dict = {
         "name": "Guardian" + randomFavSub,
-        "student_id": "tuition ++",
+        "student_id": "07ca1f7e-4af6-4942-8eea-bba47c29cbcf",
         "amount" : 12321.12
     }
     headers = {

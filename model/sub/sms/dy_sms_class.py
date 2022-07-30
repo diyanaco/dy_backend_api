@@ -6,7 +6,7 @@ from backend import Base
 class ClassModel(Base):
     __tablename__ = "dy_sms_class"
     id = Column(String(50), primary_key = True)
-    name = Column(String(10))
+    name = Column(String(50))
     created_date = Column(DateTime)
     updated_date = Column(DateTime)
     #Many to many relationship

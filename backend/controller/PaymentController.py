@@ -2,18 +2,17 @@ import uuid
 from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with
 from backend.controller import BaseController
-from model.sub.sms.dy_sms_class import ClassModel
 from backend import api
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from backend import engine
-from model.sys.dy_shared_branch import ClassModel
+from model.sub.sms.dy_sms_payment import PaymentModel
 
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 base = BaseController()
-Model = ClassModel
+Model = PaymentModel
 field1 = "name"
 field2 = "student_id"
 field3 = "amount"
@@ -25,7 +24,7 @@ payment_post_args.add_argument(
 payment_post_args.add_argument(
     field2, type=str, help="Student ID of payment is required", required=True)
 payment_post_args.add_argument(
-    field3, type=int, help="Amount of payment is required", required=True)
+    field3, type=float, help="Amount of payment is required", required=True)
 
 payment_post_query_args = reqparse.RequestParser()
 payment_post_query_args.add_argument(
@@ -57,7 +56,7 @@ resource_fields = base.resource_fields
 resource_fields[view] = fields.List(fields.Nested(resource_fields_payment))
 
 
-class EmployeeController(BaseController):
+class PaymentController(BaseController):
     def __init__(self):
         super().__init__()
         self.model = Model
@@ -106,7 +105,7 @@ class EmployeeController(BaseController):
         return response
 
 
-class EmployeeAllController(BaseController):
+class PaymentAllController(BaseController):
     def __init__(self):
         self.model = Model
 
@@ -117,7 +116,7 @@ class EmployeeAllController(BaseController):
         return response
 
 
-class EmployeeQueryController(BaseController):
+class PaymentQueryController(BaseController):
     def __init__(self):
         self.model = Model
 
@@ -129,7 +128,7 @@ class EmployeeQueryController(BaseController):
         return response
 
 
-class EmployeeIdsController(BaseController):
+class PaymentIdsController(BaseController):
     def __init__(self, model=Model):
         super().__init__(model)
 
@@ -142,8 +141,8 @@ class EmployeeIdsController(BaseController):
         return response
 
 
-api.add_resource(EmployeeController, "/" + view +
+api.add_resource(PaymentController, "/" + view +
                  "/<string:id>", "/" + view + "/")
-api.add_resource(EmployeeAllController, "/" + view + "/all/")
-api.add_resource(EmployeeQueryController, "/" + view + "/query/")
-api.add_resource(EmployeeIdsController, "/" + view + "/ids/")
+api.add_resource(PaymentAllController, "/" + view + "/all/")
+api.add_resource(PaymentQueryController, "/" + view + "/query/")
+api.add_resource(PaymentIdsController, "/" + view + "/ids/")

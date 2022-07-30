@@ -2,18 +2,17 @@ import uuid
 from flask_jwt_extended import jwt_required
 from flask_restful import reqparse, abort, fields, marshal_with
 from backend.controller import BaseController
-from model.sub.sms.dy_sms_class import ClassModel
+from model.sub.sms.dy_sms_employee import EmployeeModel
 from backend import api
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from backend import engine
-from model.sys.dy_shared_branch import ClassModel
 
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 base = BaseController()
-Model = ClassModel
+Model = EmployeeModel
 field1 = "name"
 field2 = "user_id"
 view = "employee"

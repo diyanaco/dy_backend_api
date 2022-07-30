@@ -5,6 +5,8 @@ import global_fields
 import random
 import string
 import pytest
+from test_user import test_get_all_user
+import global_fields
 
 GLOBAL_ID = ""
 ENDPOINT_MODEL_URL = "student/"
@@ -19,9 +21,11 @@ randomFavSub.join(random.choice(letters) for i in range(10))
 @pytest.mark.asyncio
 async def test_post_student():
     request_dict = {
-        "user_id": "0e4c1d44-04f6-4a26-a02d-8e67a91b00f1",
+        "user_id": global_fields.CROSS_USER_ID_1,
         "fav_sub": "Science"
     }
+    for i, j in request_dict.items():
+        print("Key id '%s', Value Sub '%s'" % (i, j))
 
     global GLOBAL_ID
     async with aiohttp.ClientSession() as session:
@@ -102,6 +106,7 @@ async def test_delete_student():
 
 # Calling Functions
 if __name__ == "__main__":
+    asyncio.run(test_get_all_user())
     asyncio.run(test_post_student())
     asyncio.run(test_get_student())
     asyncio.run(test_put_student())

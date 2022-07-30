@@ -11,4 +11,4 @@ class PaymentModel(Base):
     update_date = Column(DateTime)
 
     def __repr__(self):
-       return "<Payment(name='%s')>" % (self.name)
+       return "<Payment(name='%s', amount='%s')>" % (self.name, self.amount)

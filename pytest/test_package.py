@@ -28,7 +28,7 @@ async def test_post_package():
         "subject_id": global_fields.CROSS_SUBJECT_ID_1,
     }
     for i, j in request_dict.items():
-        print("The key value are : '%s' and '%s'" % (i, j))
+        print("The key value are : '%s' and '%s'" % (i, j)) 
     global GLOBAL_ID
     async with aiohttp.ClientSession() as session:
         async with session.post(URL, json=request_dict) as response:

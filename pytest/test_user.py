@@ -133,3 +133,4 @@ if __name__ == "__main__":
     asyncio.run(test_get_user())
     asyncio.run(test_put_user())
     asyncio.run(test_delete_user())
+    asyncio.run(test_get_all_user())

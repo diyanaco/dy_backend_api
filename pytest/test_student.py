@@ -24,8 +24,8 @@ async def test_post_student():
         "user_id": global_fields.CROSS_USER_ID_1,
         "fav_sub": "Science"
     }
-    for i, j in request_dict.items():
-        print("Key id '%s', Value Sub '%s'" % (i, j))
+    # for i, j in request_dict.items():
+    #     print("Key id '%s', Value Sub '%s'" % (i, j))
 
     global GLOBAL_ID
     async with aiohttp.ClientSession() as session:

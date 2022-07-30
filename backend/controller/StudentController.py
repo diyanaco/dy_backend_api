@@ -17,15 +17,16 @@ student_post_args = reqparse.RequestParser()
 student_post_args.add_argument("user_id", type=str, help="User ID of Student is required", required=True)
 student_post_args.add_argument("fav_sub", type=str, help="Fav subject of Student")
 student_post_args.add_argument("guardian_id", type=str, help="Guardian of Student")
-student_post_args.add_argument("package_set_id", type=str, help="Package Set of Student")
-student_post_args.add_argument("education_id", type=str, help="Education of Student")
+# student_post_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_post_args.add_argument("branch_id", type=str, help="Education of Student")
 student_post_args.add_argument("level_id", type=str, help="Level of Student")
 
 student_post_query_args = reqparse.RequestParser()
+student_post_query_args.add_argument("user_id", type=str, help="User ID of Student is required", required=True)
 student_post_query_args.add_argument("fav_sub", type=str,help="Fav subject of the student")
 student_post_query_args.add_argument("guardian_id", type=str, help="Guardian of Student")
-student_post_query_args.add_argument("package_set_id", type=str, help="Package Set of Student")
-student_post_query_args.add_argument("education_id", type=str, help="Education of Student")
+# student_post_query_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_post_query_args.add_argument("branch_id", type=str, help="Education of Student")
 student_post_query_args.add_argument("level_id", type=str, help="Level of Student")
 
 student_post_ids_args = reqparse.RequestParser()
@@ -35,16 +36,16 @@ student_put_args = reqparse.RequestParser()
 student_put_args.add_argument("user_id", type=str,help="User ID of Student")
 student_put_args.add_argument("fav_sub", type=str,help="Fav subject of Student")
 student_put_args.add_argument("guardian_id", type=str, help="Guardian of Student")
-student_put_args.add_argument("package_set_id", type=str, help="Package Set of Student")
-student_put_args.add_argument("education_id", type=str, help="Education of Student")
+# student_put_args.add_argument("package_set_id", type=str, help="Package Set of Student")
+student_put_args.add_argument("branch_id", type=str, help="Education of Student")
 student_put_args.add_argument("level_id", type=str, help="Level of Student")
 resource_fields_student = {
     "id": fields.String,
     "user_id": fields.String,
     "fav_sub" : fields.String,
     "guardian_id" : fields.String,
-    "package_set_id" : fields.String,
-    "education_id" : fields.String,
+    # "package_set_id" : fields.String,
+    "branch_id" : fields.String,
     "level_id" : fields.String,
     "created_date" : fields.String,
     "updated_date" : fields.String,
@@ -73,7 +74,15 @@ class StudentController(BaseController):
     @marshal_with(resource_fields)
     def post(self):
         args = student_post_args.parse_args()
-        model = self.model(id=str(uuid.uuid4()), user_id= args["user_id"], fav_sub=args["fav_sub"], created_date=self.currentDateTime, updated_date=self.currentDateTime)
+        model = self.model(id=str(uuid.uuid4()), 
+                    user_id= args["user_id"], 
+                    fav_sub=args["fav_sub"], 
+                    guardian_id = args["guardian_id"],
+                    # package_set_id = args['package_set_id'],
+                    branch_id = args['branch_id'],
+                    level_id = args["level_id"],
+                    created_date=self.currentDateTime, 
+                    updated_date=self.currentDateTime)
         a, b = self.callPostQuery(model)
         response = {**a, view: b}
         return response
@@ -90,6 +99,14 @@ class StudentController(BaseController):
             returnData.user_id = args['user_id']
         if args['fav_sub']:
             returnData.fav_sub = args['fav_sub']
+        if args['guardian_id']:
+            returnData.guardian_id = args['guardian_id']
+        # if args['package_set_id']:
+        #     returnData.package_set_id = args['package_set_id']
+        if args['branch_id']:
+            returnData.branch_id = args['branch_id']
+        if args['level_id']:
+            returnData.level_id = args['level_id']
         returnData.updated_date = self.currentDateTime
         session.commit()
         # a, b = self.callPutQuery(id, args)

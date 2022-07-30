@@ -19,7 +19,8 @@ field3 = "package_set_id"
 field4 = "subject_id"
 
 # field2 = "user_id"
-view = "package"
+view = "data"
+endpoint = "package"
 
 package_post_args = reqparse.RequestParser()
 package_post_args.add_argument(
@@ -154,8 +155,8 @@ class PackageIdsController(BaseController):
         return response
 
 
-api.add_resource(PackageController, "/" + view +
-                 "/<string:id>", "/" + view + "/")
-api.add_resource(PackageAllController, "/" + view + "/all/")
-api.add_resource(PackageQueryController, "/" + view + "/query/")
-api.add_resource(PackageIdsController, "/" + view + "/ids/")
+api.add_resource(PackageController, "/" + endpoint +
+                 "/<string:id>", "/" + endpoint + "/")
+api.add_resource(PackageAllController, "/" + endpoint + "/all/")
+api.add_resource(PackageQueryController, "/" + endpoint + "/query/")
+api.add_resource(PackageIdsController, "/" + endpoint + "/ids/")

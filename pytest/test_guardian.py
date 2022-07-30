@@ -26,7 +26,7 @@ async def test_post_guardian():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_guardian = data['guardian']
+                data_guardian = data['data']
                 data_guardian_first = data_guardian[0]
                 GLOBAL_ID = data_guardian_first['id']
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
@@ -73,7 +73,7 @@ async def test_put_guardian():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_guardian = data['guardian']
+                data_guardian = data['data']
                 data_guardian_first = data_guardian[0]
             else:
                 data = await response.text()
@@ -90,7 +90,7 @@ async def test_delete_guardian():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_guardian = data['guardian']
+                data_guardian = data['data']
                 data_guardian_first = data_guardian[0]
             else:
                 data = response.text()

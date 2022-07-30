@@ -34,7 +34,7 @@ async def test_post_package():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package = data['package']
+                data_package = data['data']
                 data_package_first = data_package[0]
                 GLOBAL_ID = data_package_first['id']
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
@@ -83,7 +83,7 @@ async def test_put_package():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package = data['package']
+                data_package = data['data']
                 data_package_first = data_package[0]
             else:
                 data = await response.text()
@@ -101,7 +101,7 @@ async def test_delete_package():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package = data['package']
+                data_package = data['data']
                 data_package_first = data_package[0]
             else:
                 data = response.text()

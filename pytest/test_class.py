@@ -25,7 +25,7 @@ async def test_post_class():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_class = data['class']
+                data_class = data['data']
                 data_class_first = data_class[0]
                 GLOBAL_ID = data_class_first['id']
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
@@ -71,7 +71,7 @@ async def test_put_class():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_class = data['class']
+                data_class = data['data']
                 data_class_first = data_class[0]
             else:
                 data = await response.text()
@@ -88,7 +88,7 @@ async def test_delete_class():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_class = data['class']
+                data_class = data['data']
                 data_class_first = data_class[0]
             else:
                 data = response.text()

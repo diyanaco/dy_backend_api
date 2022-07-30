@@ -13,6 +13,9 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
+view = "data"
+endpoint = "subject"
+
 subject_post_args = reqparse.RequestParser()
 subject_post_args.add_argument("name", type=str, help="Name of subject is required", required=True)
 
@@ -34,8 +37,7 @@ resource_fields_subject = {
 
 base = BaseController()
 resource_fields = base.resource_fields
-resource_fields['subject'] = fields.List(fields.Nested(resource_fields_subject))
-view = "subject"
+resource_fields[view] = fields.List(fields.Nested(resource_fields_subject))
 
 class SubjectController(BaseController):
     def __init__(self):
@@ -112,8 +114,8 @@ class SubjectIdsController(BaseController):
         response = {**a, view: b}
         return response
         
-api.add_resource(SubjectController, "/subject/<string:id>", "/subject/")
-api.add_resource(SubjectAllController,"/subject/all/")
-api.add_resource(SubjectQueryController, "/subject/query/")
-api.add_resource(SubjectIdsController, "/subject/ids/")
+api.add_resource(SubjectController, "/" + endpoint + "/<string:id>", "/" + endpoint + "/")
+api.add_resource(SubjectAllController,"/" + endpoint + "/all/")
+api.add_resource(SubjectQueryController, "/" + endpoint + "/query/")
+api.add_resource(SubjectIdsController, "/" + endpoint + "/ids/")
 

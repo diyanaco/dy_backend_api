@@ -16,7 +16,8 @@ Model = PaymentModel
 field1 = "name"
 field2 = "student_id"
 field3 = "amount"
-view = "payment"
+view = "data"
+endpoint = "payment"
 
 payment_post_args = reqparse.RequestParser()
 payment_post_args.add_argument(
@@ -141,8 +142,8 @@ class PaymentIdsController(BaseController):
         return response
 
 
-api.add_resource(PaymentController, "/" + view +
-                 "/<string:id>", "/" + view + "/")
-api.add_resource(PaymentAllController, "/" + view + "/all/")
-api.add_resource(PaymentQueryController, "/" + view + "/query/")
-api.add_resource(PaymentIdsController, "/" + view + "/ids/")
+api.add_resource(PaymentController, "/" + endpoint +
+                 "/<string:id>", "/" + endpoint + "/")
+api.add_resource(PaymentAllController, "/" + endpoint + "/all/")
+api.add_resource(PaymentQueryController, "/" + endpoint + "/query/")
+api.add_resource(PaymentIdsController, "/" + endpoint + "/ids/")

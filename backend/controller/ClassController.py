@@ -15,7 +15,8 @@ base = BaseController()
 Model = ClassModel
 field1 = "name"
 # field2 = "type"
-view = "class"
+view = "data"
+endpoint = "class"
 
 class_post_args = reqparse.RequestParser()
 class_post_args.add_argument(
@@ -129,7 +130,7 @@ class ClassIdsController(BaseController):
         return response
 
 
-api.add_resource(ClassController, "/" + view +"/<string:id>", "/" + view + "/")
-api.add_resource(ClassAllController, "/" + view +"/all/")
-api.add_resource(ClassQueryController, "/" + view +"/query/")
-api.add_resource(ClassIdsController, "/" + view + "/ids/")
+api.add_resource(ClassController, "/" + endpoint +"/<string:id>", "/" + endpoint + "/")
+api.add_resource(ClassAllController, "/" + endpoint +"/all/")
+api.add_resource(ClassQueryController, "/" + endpoint +"/query/")
+api.add_resource(ClassIdsController, "/" + endpoint + "/ids/")

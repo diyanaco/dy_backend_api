@@ -15,7 +15,8 @@ base = BaseController()
 Model = EmployeeModel
 field1 = "name"
 field2 = "user_id"
-view = "employee"
+view = "data"
+endpoint = "employee"
 
 employee_post_args = reqparse.RequestParser()
 employee_post_args.add_argument(
@@ -131,8 +132,8 @@ class EmployeeIdsController(BaseController):
         return response
 
 
-api.add_resource(EmployeeController, "/" + view +
-                 "/<string:id>", "/" + view + "/")
-api.add_resource(EmployeeAllController, "/" + view + "/all/")
-api.add_resource(EmployeeQueryController, "/" + view + "/query/")
-api.add_resource(EmployeeIdsController, "/" + view + "/ids/")
+api.add_resource(EmployeeController, "/" + endpoint +
+                 "/<string:id>", "/" + endpoint + "/")
+api.add_resource(EmployeeAllController, "/" + endpoint + "/all/")
+api.add_resource(EmployeeQueryController, "/" + endpoint + "/query/")
+api.add_resource(EmployeeIdsController, "/" + endpoint + "/ids/")

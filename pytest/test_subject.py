@@ -28,7 +28,7 @@ async def test_post_subject():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_subject = data['subject']
+                data_subject = data['data']
                 data_subject_first = data_subject[0]
                 GLOBAL_ID = data_subject_first['id']
                 global_fields.CROSS_SUBJECT_ID_1 = GLOBAL_ID
@@ -78,7 +78,7 @@ async def test_put_subject():
             print(response.status)
             if response.status == 200:
                 data = await response.json()
-                data_subject = data['subject']
+                data_subject = data['data']
                 data_subject_first = data_subject[0]
             else:
                 data = await response.text()
@@ -96,7 +96,7 @@ async def test_delete_subject():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_subject = data['subject']
+                data_subject = data['data']
                 data_subject_first = data_subject[0]
             else:
                 data = response.text()
@@ -111,7 +111,7 @@ async def test_get_all_subject():
             print("URl is '%s' " % (URL))
             if response.status == 200:
                 data = await response.json()
-                data_subject = data['subject']
+                data_subject = data['data']
                 totalRecords = len(data_subject)
                 global_fields.CROSS_SUBJECT_ID_1 = data_subject[0]['id']
                 #Last subject ID

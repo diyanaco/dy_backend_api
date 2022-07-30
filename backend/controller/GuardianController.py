@@ -13,7 +13,8 @@ Session.configure(bind=engine)
 session = Session()
 field1 = "primary_user_id"
 field2 = "secondary_user_id"
-view = "guardian"
+view = "data"
+endpoint = "guardian"
 
 guardian_post_args = reqparse.RequestParser()
 guardian_post_args.add_argument(
@@ -129,7 +130,7 @@ class GuardianIdsController(BaseController):
         return response
 
 
-api.add_resource(GuardianController, "/guardian/<string:id>", "/guardian/")
-api.add_resource(GuardianAllController, "/guardian/all/")
-api.add_resource(GuardianQueryController, "/guardian/query/")
-api.add_resource(GuardianIdsController, "/guardian/ids/")
+api.add_resource(GuardianController, "/"+ endpoint+"/<string:id>", "/"+ endpoint+"/")
+api.add_resource(GuardianAllController, "/"+ endpoint+"/all/")
+api.add_resource(GuardianQueryController, "/"+ endpoint+"/query/")
+api.add_resource(GuardianIdsController, "/"+ endpoint+"/ids/")

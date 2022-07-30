@@ -28,7 +28,7 @@ async def test_post_level():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_level = data['level']
+                data_level = data['data']
                 data_level_first = data_level[0]
                 GLOBAL_ID = data_level_first['id']
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
@@ -75,7 +75,7 @@ async def test_put_level():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_level = data['level']
+                data_level = data['data']
                 data_level_first = data_level[0]
             else:
                 data = await response.text()
@@ -93,7 +93,7 @@ async def test_delete_level():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_level = data['level']
+                data_level = data['data']
                 data_level_first = data_level[0]
             else:
                 data = response.text()
@@ -108,7 +108,7 @@ async def test_get_all_level():
             print("URl is '%s' " % (URL))
             if response.status == 200:
                 data = await response.json()
-                data_level = data['level']
+                data_level = data['data']
                 totalRecords = len(data_level)
                 global_fields.CROSS_LEVEL_ID_1 = data_level[0]['id']
                 #Last level ID

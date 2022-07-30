@@ -31,6 +31,9 @@ level_put_args = reqparse.RequestParser()
 level_put_args.add_argument("name", type=str, help="Name of Level")
 level_put_args.add_argument("rank", type=str, help="Rank of Level")
 
+view = "data"
+endpoint = "level"
+
 resource_fields_level = {
     "id": fields.String,
     "name": fields.String,
@@ -41,9 +44,7 @@ resource_fields_level = {
 
 base = BaseController()
 resource_fields = base.resource_fields
-resource_fields['level'] = fields.List(fields.Nested(resource_fields_level))
-view = "level"
-
+resource_fields[view] = fields.List(fields.Nested(resource_fields_level))
 
 class LevelController(BaseController):
     def __init__(self):
@@ -126,7 +127,7 @@ class LevelIdsController(BaseController):
         return response
 
 
-api.add_resource(LevelController, "/level/<string:id>", "/level/")
-api.add_resource(LevelAllController, "/level/all/")
-api.add_resource(LevelQueryController, "/level/query/")
-api.add_resource(LevelIdsController, "/level/ids/")
+api.add_resource(LevelController, "/" + endpoint + "/<string:id>", "/" + endpoint + "/")
+api.add_resource(LevelAllController, "/" + endpoint + "/all/")
+api.add_resource(LevelQueryController, "/" + endpoint + "/query/")
+api.add_resource(LevelIdsController, "/" + endpoint + "/ids/")

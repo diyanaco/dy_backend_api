@@ -16,7 +16,8 @@ base = BaseController()
 Model = BranchModel
 field1 = "name"
 field2 = "type"
-view = "branch"
+view = "data"
+endpoint = "branch"
 
 guardian_post_args = reqparse.RequestParser()
 guardian_post_args.add_argument(
@@ -131,7 +132,7 @@ class BranchIdsController(BaseController):
         return response
 
 
-api.add_resource(BranchController, "/" + view +"/<string:id>", "/" + view + "/")
-api.add_resource(BranchAllController, "/" + view +"/all/")
-api.add_resource(BranchQueryController, "/" + view +"/query/")
-api.add_resource(BranchIdsController, "/" + view + "/ids/")
+api.add_resource(BranchController, "/" + endpoint +"/<string:id>", "/" + endpoint + "/")
+api.add_resource(BranchAllController, "/" + endpoint +"/all/")
+api.add_resource(BranchQueryController, "/" + endpoint +"/query/")
+api.add_resource(BranchIdsController, "/" + endpoint + "/ids/")

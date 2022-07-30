@@ -46,7 +46,7 @@ resource_fields_user = {
 base = BaseController()
 resource_fields = base.resource_fields
 # resource_fields['user'] = fields.Nested(resource_fields_user)
-resource_fields['user'] = fields.List(fields.Nested(resource_fields_user))
+resource_fields['data'] = fields.List(fields.Nested(resource_fields_user))
 
 class UserController(BaseController):
     def __init__(self):
@@ -57,7 +57,7 @@ class UserController(BaseController):
     def get(self, id):
         #Get by Id
         a, b = self.callGetQuery(id)
-        response = {**a, "user": b}
+        response = {**a, "data": b}
         return response
 
     #Post is done in UserAuthController
@@ -82,13 +82,13 @@ class UserController(BaseController):
             returnData.last_name = args['last_name']
         returnData.updated_date = self.currentDateTime
         session.commit()
-        response = {**self.callPutQuery(), "user": returnData}
+        response = {**self.callPutQuery(), "data": returnData}
         return response
 
     @marshal_with(resource_fields)
     def delete(self, id):
         a, b = self.callDeleteQuery(id)
-        response = {**a, "user": b}
+        response = {**a, "data": b}
         return response
 
 #TODO #30 : Implement search by criteria
@@ -103,7 +103,7 @@ class UserQueryController(BaseController):
         print("Hello World")
         print(args)
         a, b = self.callGetWhereQuery(args)
-        response = {**a, "user":b}
+        response = {**a, "data":b}
         return response
 
 class UserAllController(BaseController):
@@ -117,7 +117,7 @@ class UserAllController(BaseController):
         #Get All
         a, b = self.callGetAllQuery()
         # print(json.dumps(marshal(b, resource_fields_testing)))
-        response = {**a, "user": b}
+        response = {**a, "data": b}
         return response
 class UserIdsController(BaseController):
     def __init__(self, model=UserModel):
@@ -128,7 +128,7 @@ class UserIdsController(BaseController):
         args = user_post_ids_args.parse_args()
         #Get All by ids
         a, b = self.callGetAllByIdsQuery(args['ids'])
-        response = {**a, "user": b}
+        response = {**a, "data": b}
         return response
 #api.add_resource(User, "/user/<string:first_name>")
 api.add_resource(UserController, "/user/<string:id>")

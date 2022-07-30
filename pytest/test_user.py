@@ -27,7 +27,7 @@ async def test_post_user():
         async with session.post(URL + "signup", json=request_dict) as response:
             if response.status == 201:
                 data = await response.json()
-                data_user = data['user']
+                data_user = data['data']
                 # Here we dont retrieve the first array, because
                 # the user response is not an array
                 GLOBAL_ID = data_user['id']
@@ -76,7 +76,7 @@ async def test_put_user():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_user = data['user']
+                data_user = data['data']
                 data_user_first = data_user[0]
             else:
                 data = await response.text()
@@ -100,7 +100,7 @@ async def test_delete_user():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_user = data['user']
+                data_user = data['data']
                 data_user_first = data_user[0]
             else:
                 data = response.text()
@@ -115,7 +115,7 @@ async def test_get_all_user():
             print("URl is '%s' " % (URL))
             if response.status == 200:
                 data = await response.json()
-                data_user = data['user']
+                data_user = data['data']
                 totalRecords = len(data_user)
                 global_fields.CROSS_USER_ID_1 = data_user[0]['id']
                 #Last user ID

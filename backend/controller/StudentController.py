@@ -49,14 +49,15 @@ resource_fields_student = {
     "created_date" : fields.String,
     "updated_date" : fields.String,
 }
+view = "data"
+endpoint ="student"
 
 base = BaseController()
 resource_fields = base.resource_fields
 #TODO #53 change student to data 
 #In frontend, the response key is data
 #Need to change to all controller
-resource_fields['student'] = fields.List(fields.Nested(resource_fields_student))
-view = "student"
+resource_fields[view] = fields.List(fields.Nested(resource_fields_student))
 
 class StudentController(BaseController):
     def __init__(self):
@@ -137,8 +138,8 @@ class StudentIdsController(BaseController):
         response = {**a, view: b}
         return response
         
-api.add_resource(StudentController, "/student/<string:id>", "/student/")
-api.add_resource(StudentAllController,"/student/all/")
-api.add_resource(StudentQueryController, "/student/query/")
-api.add_resource(StudentIdsController, "/student/ids/")
+api.add_resource(StudentController, "/" + endpoint+ "/<string:id>", "/" + endpoint+ "/")
+api.add_resource(StudentAllController,"/" + endpoint+ "/all/")
+api.add_resource(StudentQueryController, "/" + endpoint+ "/query/")
+api.add_resource(StudentIdsController, "/" + endpoint+ "/ids/")
 

@@ -25,7 +25,7 @@ resource_fields_user_auth = {
 base = BaseController()
 resource_fields = base.resource_fields
 resource_fields['user_auth'] = fields.Nested(resource_fields_user_auth)
-resource_fields['user'] = fields.Nested(resource_fields_user)
+resource_fields['data'] = fields.Nested(resource_fields_user)
 
 Session = sessionmaker()
 Session.configure(bind=engine)
@@ -115,7 +115,7 @@ class AuthSignupController(BaseController):
             return {
                 "status_code" : 201,
                 "message": "Successfully created new user",
-                "user" : modifiedUser,
+                "data" : modifiedUser,
                 "user_auth": {
                     "email" : modifiedUser.email,
                     "password": modifiedUser.password,

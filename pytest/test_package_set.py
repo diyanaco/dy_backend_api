@@ -27,7 +27,7 @@ async def test_post_package_set():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package_set = data['package-set']
+                data_package_set = data['data']
                 data_package_set_first = data_package_set[0]
                 GLOBAL_ID = data_package_set_first['id']
                 global_fields.CROSS_PACKAGE_SET_ID_1 = GLOBAL_ID
@@ -74,7 +74,7 @@ async def test_put_package_set():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package_set = data['package-set']
+                data_package_set = data['data']
                 data_package_set_first = data_package_set[0]
             else:
                 data = await response.text()
@@ -92,7 +92,7 @@ async def test_delete_package_set():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_package_set = data['package-set']
+                data_package_set = data['data']
                 data_package_set_first = data_package_set[0]
             else:
                 data = response.text()
@@ -107,7 +107,7 @@ async def test_get_all_package_set():
             print("URl is '%s' " % (URL))
             if response.status == 200:
                 data = await response.json()
-                data_package_set = data['package-set']
+                data_package_set = data['data']
                 totalRecords = len(data_package_set)
                 global_fields.CROSS_PACKAGE_SET_ID_1 = data_package_set[0]['id']
                 #Last package_set ID

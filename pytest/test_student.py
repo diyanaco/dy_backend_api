@@ -32,7 +32,7 @@ async def test_post_student():
         async with session.post(URL, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_student = data['student']
+                data_student = data['data']
                 data_student_first = data_student[0]
                 GLOBAL_ID = data_student_first['id']
                 assert GLOBAL_ID, "GLOBAL_ID couldn't be created"
@@ -79,7 +79,7 @@ async def test_put_student():
         async with session.put(URL + GLOBAL_ID, json=request_dict) as response:
             if response.status == 200:
                 data = await response.json()
-                data_student = data['student']
+                data_student = data['data']
                 data_student_first = data_student[0]
             else:
                 data = await response.text()
@@ -96,7 +96,7 @@ async def test_delete_student():
         async with session.delete(URL + GLOBAL_ID) as response:
             if response.status == 200:
                 data = await response.json()
-                data_student = data['student']
+                data_student = data['data']
                 data_student_first = data_student[0]
             else:
                 data = response.text()
